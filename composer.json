@@ -21,6 +21,7 @@
         "symfony/expression-language": "6.1.*",
         "symfony/flex": "^1.17|^2",
         "symfony/framework-bundle": "*",
+        "symfony/maker-bundle": "^1.43",
         "symfony/property-access": "5.4.*",
         "symfony/property-info": "5.4.*",
         "symfony/proxy-manager-bridge": "6.1.*",
