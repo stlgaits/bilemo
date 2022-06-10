@@ -1,5 +1,6 @@
 # BileMo
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/7085e4ffbf864523b6fd8227845a9531)](https://www.codacy.com/gh/EstelleMyddleware/bilemo/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=EstelleMyddleware/bilemo&amp;utm_campaign=Badge_Grade)
 ![GitHub last commit](https://img.shields.io/github/last-commit/EstelleMyddleware/bilemo)
 [![GitHub issues](https://img.shields.io/github/issues/EstelleMyddleware/bilemo)](https://github.com/EstelleMyddleware/bilemo/issues)
 [![GitHub closed issues](https://img.shields.io/github/issues-closed/EstelleMyddleware/bilemo)](https://github.com/EstelleMyddleware/bilemo/issues?q=is%3Aissue+is%3Aclosed)
@@ -9,7 +10,7 @@
  API for B2B mobile phones catalog. Full documentation for the API is available [here](https://estellemyddleware.github.io/bilemo/)
 
 
-#### Downloading the project
+## Downloading the project
 
 If you would like to install this project on your computer, you will first need to [clone the repo](https://github.com/EstelleMyddleware/bilemo) of this project using Git.
 
@@ -22,18 +23,18 @@ ADMIN_PASSWORD=ChooseAStrongPersonalPasswordHere
 ADMIN_USERNAME=youradminusername
  ```
 
-#### Requirements
+## Requirements
 
-* PHP 8.1.4 or above
-* [composer](https://getcomposer.org/download/)
-* Download the [Symfony CLI](https://symfony.com/download).
-* Run this command will guide you in cases there are missing extensions or parameters you need to tweek on your machine
+  * PHP 8.1.4 or above
+  * [composer](https://getcomposer.org/download/)
+  * Download the [Symfony CLI](https://symfony.com/download).
+  * Run this command will guide you in cases there are missing extensions or parameters you need to tweek on your machine
 
 ```bash
 symfony check:requirements  
 ```
 
-#### Install dependencies
+## Install dependencies
 
 Before running the project, you need to run the following commands in order to install the appropriate dependencies.
 
@@ -41,7 +42,7 @@ Before running the project, you need to run the following commands in order to i
 composer install
 ```
 
-#### Create a database
+## Create a database
 
 Now let's create our database. This will use the DATABASE_URL you've provided in .env.local file.
 
@@ -49,13 +50,13 @@ Now let's create our database. This will use the DATABASE_URL you've provided in
 php bin/console doctrine:database:create
 ```
 
-#### Generating the database schema
+## Generating the database schema
 
 ```bash
  php bin/console doctrine:schema:update --force
  ```
 
-#### Running the webserver
+## Running the webserver
 
 Now you should be ready to launch the dev webserver using
 
