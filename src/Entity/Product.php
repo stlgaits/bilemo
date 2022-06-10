@@ -33,6 +33,9 @@ class Product
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'products')]
     private $category;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    private $brand;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -106,6 +109,18 @@ class Product
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getBrand(): ?string
+    {
+        return $this->brand;
+    }
+
+    public function setBrand(string $brand): self
+    {
+        $this->brand = $brand;
 
         return $this;
     }
