@@ -36,6 +36,9 @@ class Product
     #[ORM\Column(type: 'string', length: 255)]
     private $brand;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    private $sku;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -121,6 +124,18 @@ class Product
     public function setBrand(string $brand): self
     {
         $this->brand = $brand;
+
+        return $this;
+    }
+
+    public function getSku(): ?string
+    {
+        return $this->sku;
+    }
+
+    public function setSku(string $sku): self
+    {
+        $this->sku = $sku;
 
         return $this;
     }
