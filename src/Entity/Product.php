@@ -1,43 +1,70 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: ['get'],
+    itemOperations: ['get'],
+    attributes: [
+        'pagination_items_per_page' => 10,
+        'formats' => ['json'],
+    ],
+)]
+#[ApiFilter(BooleanFilter::class, properties: ['available'])]
+#[ApiFilter(SearchFilter::class, properties: ['category' => 'partial'])]
+#[UniqueEntity(fields: ['name'])]
 class Product
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $name;
+    #[Assert\NotBlank()]
+    #[Assert\Length(min: 2, minMessage: 'Le nom doit contenir au moins 2 caractères')]
+    private ?string $name;
 
     #[ORM\Column(type: 'decimal', precision: 5, scale: 2, nullable: true)]
-    private $price;
+    private ?string $price;
 
     #[ORM\Column(type: 'datetime_immutable')]
-    private $createdAt;
+    private ?\DateTimeImmutable $createdAt;
 
     #[ORM\Column(type: 'datetime_immutable')]
-    private $updatedAt;
+    private ?\DateTimeImmutable $updatedAt;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $description;
+    private ?string $description;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'products')]
-    private $category;
+    #[Assert\Valid()]
+    private ?Category $category;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $brand;
+    private ?string $brand;
 
+
+    /**
+     * Stock Keeping Unit (a.k.a. bar code)
+     */
     #[ORM\Column(type: 'string', length: 255)]
-    private $sku;
+    private ?string $sku;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $available = false;
 
     public function getId(): ?int
     {
@@ -136,6 +163,18 @@ class Product
     public function setSku(string $sku): self
     {
         $this->sku = $sku;
+
+        return $this;
+    }
+
+    public function isAvailable(): ?bool
+    {
+        return $this->available;
+    }
+
+    public function setAvailable(bool $available): self
+    {
+        $this->available = $available;
 
         return $this;
     }

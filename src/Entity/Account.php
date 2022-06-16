@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
@@ -7,31 +9,33 @@ use App\Repository\AccountRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AccountRepository::class)]
-#[ApiResource]
+#[ApiResource(
+
+)]
 class Account
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private int  $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $name;
+    private ?string $name;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $description;
+    private ?string $description;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $industry;
+    private ?string $industry;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $primaryEmail;
+    private ?string $primaryEmail;
 
     #[ORM\Column(type: 'datetime_immutable')]
-    private $createdAt;
+    private ?\DateTimeImmutable $createdAt;
 
     #[ORM\Column(type: 'datetime_immutable')]
-    private $updatedAt;
+    private ?\DateTimeImmutable $updatedAt;
 
     public function getId(): ?int
     {

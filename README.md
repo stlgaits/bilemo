@@ -56,6 +56,12 @@ php bin/console doctrine:database:create
  php bin/console doctrine:schema:update --force
  ```
 
+## Load fixtures (initial dummy data)
+
+```bash
+ php bin/console doctrine:fixtures:load --append
+ ```
+
 ## Running the webserver
 
 Now you should be ready to launch the dev webserver using
