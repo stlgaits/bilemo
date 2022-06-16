@@ -10,7 +10,12 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AccountRepository::class)]
 #[ApiResource(
-
+    collectionOperations: [],
+    itemOperations: ['get'],
+    attributes: [
+        'pagination_items_per_page' => 10,
+        'formats' => ['json']
+    ]
 )]
 class Account
 {
