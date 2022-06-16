@@ -4,12 +4,28 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ApiResource(
+    collectionOperations: ['get'],
+    itemOperations: ['get', 'post', 'delete'],
+    attributes: [
+        'pagination_items_per_page' => 10,
+        'formats' => ['json'],
+    ],
+    denormalizationContext: ['groups' => [ 'user:write']],
+    normalizationContext: ['groups' => [ 'user:read']],
+)]
+#[UniqueEntity(fields: ['username'])]
+#[UniqueEntity(fields: ['email'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -18,17 +34,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private int $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[Groups(['user:read', 'user:write'])]
+    #[Assert\NotBlank()]
+    #[Assert\Email()]
     private ?string $email;
 
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
     #[ORM\Column(type: 'string')]
+    #[Groups(['user:write'])]
     private string $password;
 
     #[ORM\ManyToOne(targetEntity: Account::class, inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
-    private $account;
+    #[Assert\Valid()]
+    #[Groups(['user:read'])]
+    private ?Account $account;
 
     public function getId(): ?int
     {
