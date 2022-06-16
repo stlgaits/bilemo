@@ -15,8 +15,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
-    collectionOperations: ['get'],
-    itemOperations: ['get', 'post', 'delete'],
+    collectionOperations: ['get', 'post'],
+    itemOperations: ['get', 'delete'],
     attributes: [
         'pagination_items_per_page' => 10,
         'formats' => ['json'],
