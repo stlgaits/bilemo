@@ -44,6 +44,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'string')]
     #[Groups(['user:write'])]
+    #[Assert\NotBlank()]
     private string $password;
 
     #[ORM\ManyToOne(targetEntity: Account::class, inversedBy: 'users')]
@@ -51,6 +52,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Valid()]
     #[Groups(['user:read'])]
     private ?Account $account;
+
+    #[Assert\NotBlank()]
+    #[Groups(['user:read', 'user:write'])]
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $firstName;
+
+    #[Assert\NotBlank()]
+    #[Groups(['user:read', 'user:write'])]
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $lastName;
 
     public function getId(): ?int
     {
@@ -130,6 +141,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setAccount(?Account $account): self
     {
         $this->account = $account;
+
+        return $this;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(string $firstName): self
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(string $lastName): self
+    {
+        $this->lastName = $lastName;
 
         return $this;
     }
