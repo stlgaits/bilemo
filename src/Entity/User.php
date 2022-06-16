@@ -66,10 +66,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'datetime_immutable')]
     #[Gedmo\Timestampable(on: 'create')]
+    #[Groups(['user:read'])]
     private ?\DateTimeImmutable $createdAt;
 
     #[ORM\Column(type: 'datetime_immutable')]
     #[Gedmo\Timestampable(on: 'change', field: ['email', 'roles', 'password', 'account', 'firstName', 'lastName'])]
+    #[Groups(['user:read'])]
     private ?\DateTimeImmutable $updatedAt;
 
     public function getId(): ?int
