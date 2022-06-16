@@ -9,6 +9,8 @@ use App\Repository\AccountRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: AccountRepository::class)]
 #[ApiResource(
@@ -19,8 +21,10 @@ use Doctrine\ORM\Mapping as ORM;
         'formats' => ['json']
     ]
 )]
+#[UniqueEntity(fields: ['name'])]
 class Account
 {
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -39,13 +43,15 @@ class Account
     private ?string $primaryEmail;
 
     #[ORM\Column(type: 'datetime_immutable')]
+    #[Gedmo\Timestampable(on: 'create')]
     private ?\DateTimeImmutable $createdAt;
 
     #[ORM\Column(type: 'datetime_immutable')]
+    #[Gedmo\Timestampable(on: 'change', field: ['name', 'description', 'industry', 'primaryEmail', 'users'])]
     private ?\DateTimeImmutable $updatedAt;
 
     #[ORM\OneToMany(mappedBy: 'account', targetEntity: User::class, orphanRemoval: true)]
-    private $users;
+    private ArrayCollection $users;
 
     public function __construct()
     {

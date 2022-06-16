@@ -10,6 +10,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -25,6 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiFilter(BooleanFilter::class, properties: ['available'])]
 #[ApiFilter(SearchFilter::class, properties: ['category' => 'partial'])]
 #[UniqueEntity(fields: ['name'])]
+#[UniqueEntity(fields: ['sku'])]
 class Product
 {
     #[ORM\Id]
@@ -41,9 +43,11 @@ class Product
     private ?string $price;
 
     #[ORM\Column(type: 'datetime_immutable')]
+    #[Gedmo\Timestampable(on: 'create')]
     private ?\DateTimeImmutable $createdAt;
 
     #[ORM\Column(type: 'datetime_immutable')]
+    #[Gedmo\Timestampable(on: 'change', field: ['name', 'description', 'price', 'category', 'brand', 'sku', 'available'])]
     private ?\DateTimeImmutable $updatedAt;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -55,7 +59,6 @@ class Product
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $brand;
-
 
     /**
      * Stock Keeping Unit (a.k.a. bar code)
