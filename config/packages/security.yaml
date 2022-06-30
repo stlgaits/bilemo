@@ -17,17 +17,24 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        login:
-            pattern: ^/api/login
-                stateless: true
-                json_login:
-                    check_path: /api/login_check
-                    success_handler: lexik_jwt_authentication.handler.authentication_success
-                    failure_handler: lexik_jwt_authentication.handler.authentication_failure
+#        login:
+#            pattern: ^/api/login
+#                stateless: true
+#            json_login:
+#                check_path: /api/login_check
+#                success_handler: lexik_jwt_authentication.handler.authentication_success
+#                failure_handler: lexik_jwt_authentication.handler.authentication_failure
         api:
             pattern: ^/api
             stateless: true
+            entry_point: jwt
+            json_login:
+                check_path: api_login
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
             jwt: ~
+            refresh_jwt:
+                check_path: /api/token/refresh
         main:
             lazy: true
             provider: app_user_provider
@@ -52,9 +59,10 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
         # - { path: ^/api/(post|comment)/\d+$, roles: ROLE_USER }
-#        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/token/refresh, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        # - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+        # - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/(login|token/refresh), roles: PUBLIC_ACCESS }
+        # - { path: ^/api/token/refresh, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api, roles: ROLE_USER }
 
 when@test:
