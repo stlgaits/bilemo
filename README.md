@@ -9,6 +9,27 @@
 
  API for B2B mobile phones catalog. Full documentation for the API is available [here](https://estellemyddleware.github.io/bilemo/)
 
+## API Resources
+
+For the sake of clarity, you will find below the list & description of available API resources.
+
+### Products
+
+Products sold by BileMo (mobile phones, tablets, headphones and other accessories).
+
+### Categories
+
+Each product belongs  to a Category (e.g. phone, tablet, accessory).
+
+### Accounts
+
+An account is a BileMo customer - it is usually a company.
+
+### Users
+
+A user is someone who has been granted access to the BileMo API. Each user belongs to an Account. A user can 
+
+
 
 ## Downloading the project
 
