@@ -14,7 +14,7 @@ class ApiLoginController extends AbstractController
     #[Route('/api/login', name: 'api_login')]
     public function index(#[CurrentUser] ?User $user): JsonResponse
     {
-        if(!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->json([
                 'error' => 'Invalid login request: check that the Content-Type headers are set to "application/json"'
             ], 400);
