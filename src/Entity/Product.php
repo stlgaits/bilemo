@@ -40,10 +40,6 @@ class Product
     #[Assert\Length(min: 2, minMessage: 'Le nom doit contenir au moins 2 caractères')]
     private ?string $name;
 
-//    #[ORM\Column(type: 'decimal', precision: 5, scale: 2, nullable: true)]
-    #[ORM\Column(type: 'decimal', precision: 5, nullable: true)]
-    private ?string $price;
-
     #[ORM\Column(type: 'datetime_immutable')]
     #[Gedmo\Timestampable(on: 'create')]
     private ?DateTimeImmutable $createdAt;
@@ -71,6 +67,9 @@ class Product
     #[ORM\Column(type: 'boolean')]
     private bool $available = false;
 
+    #[ORM\Column(type: 'float')]
+    private ?float $price;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -84,18 +83,6 @@ class Product
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getPrice(): ?string
-    {
-        return $this->price;
-    }
-
-    public function setPrice(?string $price): self
-    {
-        $this->price = $price;
 
         return $this;
     }
@@ -180,6 +167,18 @@ class Product
     public function setAvailable(bool $available): self
     {
         $this->available = $available;
+
+        return $this;
+    }
+
+    public function getPrice(): ?float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(float $price): self
+    {
+        $this->price = $price;
 
         return $this;
     }
