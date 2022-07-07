@@ -50,7 +50,7 @@ class Account
     private ?\DateTimeImmutable $updatedAt;
 
     #[ORM\OneToMany(mappedBy: 'account', targetEntity: User::class, orphanRemoval: true)]
-    private ArrayCollection $users;
+    private $users;
 
     public function __construct()
     {

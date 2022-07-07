@@ -5,12 +5,15 @@ namespace App\DataFixtures;
 use App\Entity\User;
 use App\Repository\AccountRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class UserFixtures extends Fixture
+class UserFixtures extends Fixture  implements DependentFixtureInterface
 {
     protected UserPasswordHasherInterface $hasher;
     private ContainerBagInterface $params;
@@ -23,6 +26,10 @@ class UserFixtures extends Fixture
         $this->accountRepository = $accountRepository;
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
@@ -49,8 +56,8 @@ class UserFixtures extends Fixture
     }
 
     /**
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
      */
     public function addSuperAdmin(): User
     {
@@ -64,7 +71,7 @@ class UserFixtures extends Fixture
         return $admin;
     }
 
-    public static function getReferenceKey($key)
+    public static function getReferenceKey($key): string
     {
         return sprintf('user_%s', $key);
     }
