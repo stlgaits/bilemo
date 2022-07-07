@@ -48,7 +48,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank()]
     private string $password;
 
-    #[ORM\ManyToOne(targetEntity: Account::class, inversedBy: 'users')]
+    #[ORM\ManyToOne(targetEntity: Account::class, cascade: ['persist'], inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\Valid()]
     #[Groups(['user:read'])]
