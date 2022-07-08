@@ -78,8 +78,8 @@ class UserFixtures extends Fixture  implements DependentFixtureInterface
 
         $admin = new User();
         $admin->setEmail($this->params->get('admin_email_address'))
-            ->setFirstName($this->params->get('admin_username'))
-            ->setLastName($this->params->get('admin_username'))
+            ->setFirstName($this->params->get('admin_firstname'))
+            ->setLastName($this->params->get('admin_lastname'))
             ->setPassword($this->hasher->hashPassword($admin, $this->params->get('admin_password')))
             ->setCreatedAt(new DateTimeImmutable('now'))
             ->setUpdatedAt(new DateTimeImmutable('now'))

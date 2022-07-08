@@ -3,3 +3,7 @@ api_login_check:
 
 api_refresh_token:
   path: /api/token/refresh
+
+swagger_ui:
+  path: /docs
+  controller: api_platform.swagger.action.ui

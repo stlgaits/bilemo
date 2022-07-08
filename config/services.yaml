@@ -6,7 +6,8 @@
 parameters:
     admin_email_address: '%env(resolve:ADMIN_EMAIL)%'
     admin_password: '%env(resolve:ADMIN_PASSWORD)%'
-    admin_username: '%env(resolve:ADMIN_USERNAME)%'
+    admin_firstname: '%env(resolve:ADMIN_FIRSTNAME)%'
+    admin_lastname: '%env(resolve:ADMIN_LASTNAME)%'
 services:
     # default configuration for services in *this* file
     _defaults:
