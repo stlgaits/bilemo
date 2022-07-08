@@ -25,7 +25,6 @@ use Symfony\Component\Validator\Constraints as Assert;
     denormalizationContext: ['groups' => [ 'user:write']],
     normalizationContext: ['groups' => [ 'user:read']],
 )]
-#[UniqueEntity(fields: ['username'])]
 #[UniqueEntity(fields: ['email'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {

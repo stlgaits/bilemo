@@ -26,6 +26,7 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
                 ->setDescription($faker->text())
                 ->setCreatedAt(new DateTimeImmutable('-1 day'))
                 ->setUpdatedAt(new DateTimeImmutable())
+                ->setAvailable($faker->boolean(75))
                 ->setCategory($category)
             ;
             $manager->persist($product);
