@@ -11,7 +11,6 @@ use Faker\Factory;
 
 class CategoryFixtures extends Fixture
 {
-
     private array $categories = [
         'smartphone',
         'smartwatch',

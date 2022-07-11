@@ -11,7 +11,6 @@ use Faker\Factory;
 
 class AccountFixtures extends Fixture
 {
-
     /**
      * @throws \Exception
      */

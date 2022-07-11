@@ -16,7 +16,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class UserFixtures extends Fixture  implements DependentFixtureInterface
+class UserFixtures extends Fixture implements DependentFixtureInterface
 {
     protected UserPasswordHasherInterface $hasher;
     private ContainerBagInterface $params;
@@ -43,8 +43,6 @@ class UserFixtures extends Fixture  implements DependentFixtureInterface
      */
     public function load(ObjectManager $manager): void
     {
-
-
         $createdAt = $this->faker->dateTimeThisDecade();
         for ($i = 0; $i < 30; ++$i) {
             $user = new User();
@@ -75,7 +73,6 @@ class UserFixtures extends Fixture  implements DependentFixtureInterface
      */
     public function addSuperAdmin(): User
     {
-
         $admin = new User();
         $admin->setEmail($this->params->get('admin_email_address'))
             ->setFirstName($this->params->get('admin_firstname'))
