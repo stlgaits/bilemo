@@ -9,6 +9,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\ProductRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -39,16 +40,13 @@ class Product
     #[Assert\Length(min: 2, minMessage: 'Le nom doit contenir au moins 2 caractères')]
     private ?string $name;
 
-    #[ORM\Column(type: 'decimal', precision: 5, scale: 2, nullable: true)]
-    private ?string $price;
-
     #[ORM\Column(type: 'datetime_immutable')]
     #[Gedmo\Timestampable(on: 'create')]
-    private ?\DateTimeImmutable $createdAt;
+    private ?DateTimeImmutable $createdAt;
 
     #[ORM\Column(type: 'datetime_immutable')]
     #[Gedmo\Timestampable(on: 'change', field: ['name', 'description', 'price', 'category', 'brand', 'sku', 'available'])]
-    private ?\DateTimeImmutable $updatedAt;
+    private ?DateTimeImmutable $updatedAt;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $description;
@@ -69,6 +67,9 @@ class Product
     #[ORM\Column(type: 'boolean')]
     private bool $available = false;
 
+    #[ORM\Column(type: 'float')]
+    private ?float $price;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,36 +87,24 @@ class Product
         return $this;
     }
 
-    public function getPrice(): ?string
-    {
-        return $this->price;
-    }
-
-    public function setPrice(?string $price): self
-    {
-        $this->price = $price;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    public function setCreatedAt(DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeImmutable
+    public function getUpdatedAt(): ?DateTimeImmutable
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
+    public function setUpdatedAt(DateTimeImmutable $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 
@@ -178,6 +167,18 @@ class Product
     public function setAvailable(bool $available): self
     {
         $this->available = $available;
+
+        return $this;
+    }
+
+    public function getPrice(): ?float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(float $price): self
+    {
+        $this->price = $price;
 
         return $this;
     }

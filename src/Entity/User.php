@@ -17,7 +17,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
     collectionOperations: ['get', 'post'],
-    itemOperations: ['get', 'delete'],
+    itemOperations: [
+        "get",
+        "delete" => ["security" => "is_granted('ROLE_ADMIN') or object.owner == user"],
+    ],
     attributes: [
         'pagination_items_per_page' => 10,
         'formats' => ['json'],
@@ -25,7 +28,6 @@ use Symfony\Component\Validator\Constraints as Assert;
     denormalizationContext: ['groups' => [ 'user:write']],
     normalizationContext: ['groups' => [ 'user:read']],
 )]
-#[UniqueEntity(fields: ['username'])]
 #[UniqueEntity(fields: ['email'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -48,7 +50,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank()]
     private string $password;
 
-    #[ORM\ManyToOne(targetEntity: Account::class, inversedBy: 'users')]
+    #[ORM\ManyToOne(targetEntity: Account::class, cascade: ['persist'], inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\Valid()]
     #[Groups(['user:read'])]
