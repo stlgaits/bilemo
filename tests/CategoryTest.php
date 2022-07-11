@@ -3,14 +3,16 @@
 namespace App\Tests;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class CategoryTest extends ApiTestCase
 {
-    public function testSomething(): void
+    /**
+     * @throws TransportExceptionInterface
+     */
+    public function testReadCategoriesWithNoJWTToken(): void
     {
-        $response = static::createClient()->request('GET', '/');
-
-        $this->assertResponseIsSuccessful();
-        $this->assertJsonContains(['@id' => '/']);
+        $response = static::createClient()->request('GET', '/api/categories');
+        $this->assertResponseStatusCodeSame(401);
     }
 }
