@@ -14,7 +14,7 @@ jobs:
        uses: php-actions/composer@v6
 
      - name: PHPUnit Tests
-       uses: php-actions/php-unit@v3
+       uses: chindit/actions-phpunit@1.0.0
        env:
          XDEBUG_MODE: coverage
        with:
