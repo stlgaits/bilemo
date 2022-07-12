@@ -75,7 +75,7 @@ class ProductTest extends ApiTestCase
         $client = static::createClient();
 
         $userRepository = static::getContainer()->get(UserRepository::class);
-        $testUser = $userRepository->findOneByEmail('testuser18@email.com');
+        $testUser = $userRepository->findOneByEmail('testuser19@email.com');
         $token = $this->getJWTToken($testUser);
 
         $response = $client->request('GET', '/api/products',[
@@ -125,7 +125,7 @@ class ProductTest extends ApiTestCase
         $account->setUpdatedAt(new DateTimeImmutable());
 
         $user = new User();
-        $user->setEmail('testuser18@email.com');
+        $user->setEmail('testuser19@email.com');
         $user->setFirstName('Kevin');
         $user->setLastName('Weaver');
         $user->setCreatedAt(new DateTimeImmutable());
