@@ -19,6 +19,7 @@ jobs:
          XDEBUG_MODE: coverage
        with:
          args: tests --coverage-clover ./coverage.xml
+         php_version: 8.1
 
      - name: Upload to Codecov
        uses: codecov/codecov-action@v2
