@@ -1,7 +1,13 @@
-name: CI
+name: CI - PHPUnit & PHPStan
 
-on: [push]
-
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+      - dev
 jobs:
  build-test:
    runs-on: ubuntu-latest
@@ -12,6 +18,11 @@ jobs:
 
      - name: Install composer and dependencies
        uses: php-actions/composer@v6
+
+     - name: Run PHPStan
+       run:  vendor/bin/phpstan analyse -l 0 \
+             --configuration phpstan.neon \
+             src/ tests/ --generate-baseline
 
      - name: PHPUnit Tests
        uses: chindit/actions-phpunit@master
