@@ -21,7 +21,6 @@ jobs:
 
      - name: Run PHPStan
        run:  vendor/bin/phpstan analyse -l 0 \
-             --configuration phpstan.neon \
              src/ tests/ --generate-baseline
 
      - name: PHPUnit Tests
