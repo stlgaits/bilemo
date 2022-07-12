@@ -14,12 +14,11 @@ jobs:
        uses: php-actions/composer@v6
 
      - name: PHPUnit Tests
-       uses: chindit/actions-phpunit@1.0.0
+       uses: chindit/actions-phpunit@master
        env:
          XDEBUG_MODE: coverage
        with:
          args: tests --coverage-clover ./coverage.xml
-         php_version: 8.1
 
      - name: Upload to Codecov
        uses: codecov/codecov-action@v2
