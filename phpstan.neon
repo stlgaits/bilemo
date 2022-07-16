@@ -3,4 +3,9 @@ parameters:
 	paths:
 		- src
 		- tests
+	symfony:
+		# or with Symfony 5+
+		containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
+	scanDirectories:
+		- var/cache/dev/Symfony/Config
 	editorUrl: 'phpstorm://open?file=%%file%%&line=%%line%%'
