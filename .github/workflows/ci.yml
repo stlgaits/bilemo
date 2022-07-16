@@ -20,9 +20,7 @@ jobs:
        uses: php-actions/composer@v6
 
      - name: Run PHPStan
-       run:  vendor/bin/phpstan analyse -l 9 \
-             -c phpstan.neon \
-             src/ tests/
+       run:  vendor/bin/phpstan analyse -l 9 -c phpstan.neon  src/ tests/
 
      - name: PHPUnit Tests
        uses: chindit/actions-phpunit@master
