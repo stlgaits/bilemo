@@ -90,6 +90,7 @@
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.4",
+        "hautelook/alice-bundle": "^2.11",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan-beberlei-assert": "^1.0",
         "phpstan/phpstan-doctrine": "^1.3",

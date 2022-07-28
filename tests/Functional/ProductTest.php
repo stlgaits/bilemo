@@ -10,6 +10,7 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use DateTimeImmutable;
 use Exception;
+use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
@@ -20,6 +21,9 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
  */
 class ProductTest extends ApiTestCase
 {
+
+    use ReloadDatabaseTrait;
+
     /**
      * @throws TransportExceptionInterface
      */
