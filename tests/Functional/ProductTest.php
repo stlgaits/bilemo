@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Functional;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
@@ -13,6 +15,9 @@ use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
+/**
+ * @covers \App\Entity\Product
+ */
 class ProductTest extends ApiTestCase
 {
     /**
@@ -75,7 +80,7 @@ class ProductTest extends ApiTestCase
         $client = static::createClient();
 
         $userRepository = static::getContainer()->get(UserRepository::class);
-        $testUser = $userRepository->findOneByEmail('testuser19@email.com');
+        $testUser = $userRepository->findOneByEmail('testuser22@email.com');
         $token = $this->getJWTToken($testUser);
 
         $response = $client->request('GET', '/api/products',[
@@ -84,13 +89,14 @@ class ProductTest extends ApiTestCase
                 'Authorization' => 'Bearer '.$token
                 ]
         ]);
-
+        $this->assertNotNull($testUser);
         $this->assertResponseIsSuccessful();
         $this->assertResponseStatusCodeSame(200);
     }
 
 
     /**
+     * @coversNothing
      * @throws TransportExceptionInterface
      * @throws ServerExceptionInterface
      * @throws RedirectionExceptionInterface
@@ -125,7 +131,7 @@ class ProductTest extends ApiTestCase
         $account->setUpdatedAt(new DateTimeImmutable());
 
         $user = new User();
-        $user->setEmail('testuser19@email.com');
+        $user->setEmail('testuser22@email.com');
         $user->setFirstName('Kevin');
         $user->setLastName('Weaver');
         $user->setCreatedAt(new DateTimeImmutable());

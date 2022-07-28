@@ -1,0 +1,40 @@
+name: CI - PHPUnit & PHPStan
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+      - dev
+jobs:
+ build-test:
+   runs-on: ubuntu-latest
+
+   steps:
+     - name: Checkout Code
+       uses: actions/checkout@v3
+
+     - name: Install composer and dependencies
+       uses: php-actions/composer@v6
+
+#     - name: PHPUnit Tests
+#       uses: chindit/actions-phpunit@master
+#       env:
+#         XDEBUG_MODE: coverage
+#       with:
+#         args: tests --coverage-clover ./coverage.xml
+
+#     - name: Run PHPStan
+#       run:  vendor/bin/phpstan analyse -l 9 -c phpstan.neon  src/ tests/
+#
+     - name: Upload to Codecov
+       uses: codecov/codecov-action@v2
+       with:
+         token: ${{ secrets.CODE_COV_TOKEN }}
+         files: ./coverage.xml
+         verbose: true
+
+
+      
