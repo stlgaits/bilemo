@@ -26,9 +26,9 @@ jobs:
 #       with:
 #         args: tests --coverage-clover ./coverage.xml
 
-     - name: Run PHPStan
-       run:  vendor/bin/phpstan analyse -l 9 -c phpstan.neon  src/ tests/
-
+#     - name: Run PHPStan
+#       run:  vendor/bin/phpstan analyse -l 9 -c phpstan.neon  src/ tests/
+#
      - name: Upload to Codecov
        uses: codecov/codecov-action@v2
        with:
