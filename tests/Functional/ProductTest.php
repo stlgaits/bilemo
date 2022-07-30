@@ -66,7 +66,7 @@ class ProductTest extends CustomApiTestCase
         $account = $this->createAccount('lionel.richie@darty.fr');
         $user = $this->createUser(
             'francis.nanalle@orange.fr',
-            '$2y$13$2WX2m2dkv.A.tYfBgEJWWupMrxsgj.q6SOHZ/VirwcRapp0.Ra6pG',
+            'password',
             $account
         );
 
@@ -85,7 +85,7 @@ class ProductTest extends CustomApiTestCase
         $account = $this->createAccount('charles.marx@free.fr');
         $testUser = $this->createUser(
             'francis.larbec@msn.com',
-            '$2y$13$2WX2m2dkv.A.tYfBgEJWWupMrxsgj.q6SOHZ/VirwcRapp0.Ra6pG',
+            'password',
             $account
         );
         $token = $this->getJWTToken($testUser, $client);

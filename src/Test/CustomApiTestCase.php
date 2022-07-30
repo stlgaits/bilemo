@@ -30,7 +30,8 @@ class CustomApiTestCase extends ApiTestCase
         $user->setLastName(substr($email, $lastNameOffset , strpos($email, '@', $lastNameOffset)));
         $user->setCreatedAt(new DateTimeImmutable());
         $user->setUpdatedAt(new DateTimeImmutable());
-        $user->setPassword($password);
+        $encoded = $container->get('security.password_hasher')->hashPassword($user, $password);
+        $user->setPassword($encoded);
         $user->setAccount($account);
         $em->persist($user);
         $em->flush();
@@ -77,20 +78,35 @@ class CustomApiTestCase extends ApiTestCase
         return $response->token;
     }
 
+//    /**
+//     * @throws TransportExceptionInterface
+//     */
+//    public function logIn(Client $client, string $email, string $password)
+//    {
+//        $client->request('POST', '/api/login_check',[
+//            'headers' => ['Content-Type' => 'application/json'],
+//            'json' => [
+//                'username' => $email,
+//                'password' => $password
+//            ],
+//        ]);
+//
+//        $this->assertResponseStatusCodeSame(204);
+//    }
+
     /**
      * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws Exception
+     * Undecided yet whether I want to use this logic because it only returns the token & not the User anymore
      */
-    public function logIn(Client $client, string $email, string $password)
+    protected function createUserAndLogIn(Client $client, string $email, string $password, string $primaryEmail): string
     {
-        $client->request('POST', '/api/login_check',[
-            'headers' => ['Content-Type' => 'application/json'],
-            'json' => [
-                'username' => $email,
-                'password' => $password
-            ],
-        ]);
-
-        $this->assertResponseStatusCodeSame(204);
+        $account = $this->createAccount($primaryEmail);
+        $user = $this->createUser( $email, $password, $account);
+        return $this->getJWTToken($user, $client);
     }
 
 }
