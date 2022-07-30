@@ -22,7 +22,6 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
  */
 class ProductTest extends CustomApiTestCase
 {
-
     use ReloadDatabaseTrait;
 
     /**
@@ -48,7 +47,7 @@ class ProductTest extends CustomApiTestCase
      */
     public function testCreateProductIsNotAllowed(): void
     {
-        $response = static::createClient()->request('POST', '/api/products',[
+        $response = static::createClient()->request('POST', '/api/products', [
             'headers' => ['Content-Type' => 'application/json'],
             'json' => [],
         ]);
@@ -90,7 +89,7 @@ class ProductTest extends CustomApiTestCase
         );
         $token = $this->getJWTToken($testUser, $client);
 
-        $response = $client->request('GET', '/api/products',[
+        $response = $client->request('GET', '/api/products', [
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Authorization' => 'Bearer '.$token
@@ -100,5 +99,4 @@ class ProductTest extends CustomApiTestCase
         $this->assertResponseIsSuccessful();
         $this->assertResponseStatusCodeSame(200);
     }
-
 }
