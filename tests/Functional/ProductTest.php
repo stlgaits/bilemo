@@ -8,6 +8,7 @@ use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\Account;
 use App\Entity\User;
 use App\Repository\UserRepository;
+use App\Test\CustomApiTestCase;
 use DateTimeImmutable;
 use Exception;
 use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
@@ -19,7 +20,7 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 /**
  * @covers \App\Entity\Product
  */
-class ProductTest extends ApiTestCase
+class ProductTest extends CustomApiTestCase
 {
 
     use ReloadDatabaseTrait;
@@ -51,7 +52,7 @@ class ProductTest extends ApiTestCase
             'headers' => ['Content-Type' => 'application/json'],
             'json' => [],
         ]);
-        // POST route is forbidden on this API
+        // POST route is forbidden on this API resource
         $this->assertResponseStatusCodeSame(405);
     }
 
@@ -62,15 +63,14 @@ class ProductTest extends ApiTestCase
     public function testLoginAndGetJWTToken(): void
     {
         $client = static::createClient();
-        $user = $this->createAccountAndUserInDatabase();
+        $account = $this->createAccount('lionel.richie@darty.fr');
+        $user = $this->createUser(
+            'francis.nanalle@orange.fr',
+            '$2y$13$2WX2m2dkv.A.tYfBgEJWWupMrxsgj.q6SOHZ/VirwcRapp0.Ra6pG',
+            $account
+        );
 
-        $response = $client->request('POST', '/api/login_check',[
-            'headers' => ['Content-Type' => 'application/json'],
-            'json' => [
-                'username' => 'testuser8@email.com',
-                'password' => 'password'
-            ],
-        ]);
+        $response = $this->getJWTToken($user, $client);
 
         $this->assertResponseStatusCodeSame(200);
     }
@@ -82,10 +82,13 @@ class ProductTest extends ApiTestCase
     public function testReadProductsWhileLoggedIn(): void
     {
         $client = static::createClient();
-
-        $userRepository = static::getContainer()->get(UserRepository::class);
-        $testUser = $userRepository->findOneByEmail('testuser22@email.com');
-        $token = $this->getJWTToken($testUser);
+        $account = $this->createAccount('charles.marx@free.fr');
+        $testUser = $this->createUser(
+            'francis.larbec@msn.com',
+            '$2y$13$2WX2m2dkv.A.tYfBgEJWWupMrxsgj.q6SOHZ/VirwcRapp0.Ra6pG',
+            $account
+        );
+        $token = $this->getJWTToken($testUser, $client);
 
         $response = $client->request('GET', '/api/products',[
             'headers' => [
@@ -98,57 +101,4 @@ class ProductTest extends ApiTestCase
         $this->assertResponseStatusCodeSame(200);
     }
 
-
-    /**
-     * @coversNothing
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ClientExceptionInterface
-     */
-    public function getJWTToken(User $user): string
-    {
-        $client = static::createClient();
-        $response = $client->request('POST', '/api/login_check',[
-            'headers' => ['Content-Type' => 'application/json'],
-            'json' => [
-                'username' => $user->getEmail(),
-                'password' => 'password'
-            ],
-        ]);
-
-        $response = json_decode($response->getContent());
-        return $response->token;
-    }
-
-
-    /**
-     * @throws Exception
-     */
-    public function createAccountAndUserInDatabase(): User
-    {
-//        $userRepository = static::getContainer()->get(UserRepository::class);
-        $account = new Account();
-        $account->setName('Darty');
-        $account->setPrimaryEmail('lionel@darty.fr');
-        $account->setCreatedAt(new DateTimeImmutable());
-        $account->setUpdatedAt(new DateTimeImmutable());
-
-        $user = new User();
-        $user->setEmail('testuser22@email.com');
-        $user->setFirstName('Kevin');
-        $user->setLastName('Weaver');
-        $user->setCreatedAt(new DateTimeImmutable());
-        $user->setUpdatedAt(new DateTimeImmutable());
-        $user->setPassword('$2y$13$2WX2m2dkv.A.tYfBgEJWWupMrxsgj.q6SOHZ/VirwcRapp0.Ra6pG');
-        $user->setAccount($account);
-
-        $container = static::getContainer();
-        $em = $container->get('doctrine')->getManager();
-//        $em = self::$container->get(EntityManagerInterface::class);
-        $em->persist($account);
-        $em->persist($user);
-        $em->flush();
-        return $user;
-    }
 }

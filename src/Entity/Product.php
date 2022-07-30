@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     itemOperations: ['get'],
     attributes: [
         'pagination_items_per_page' => 10,
-        'formats' => ['json'],
+        'formats' => ['json', 'jsonld'],
     ],
 )]
 #[ApiFilter(BooleanFilter::class, properties: ['available'])]

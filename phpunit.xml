@@ -33,6 +33,10 @@
         <server name="JWT_PUBLIC_KEY" value="%kernel.project_dir%/config/jwt/public.pem"/>
         <server name="JWT_PASSPHRASE" value="83ca81374d152a697035ff11c2c0fce0"/>
         <server name="CORS_ALLOW_ORIGIN" value="^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$"/>
+        <server name="ADMIN_EMAIL" value="estelle.gaits64@gmail.com"/>
+        <server name="ADMIN_PASSWORD" value="password"/>
+        <server name="ADMIN_FIRSTNAME" value="Estelle"/>
+        <server name="ADMIN_LASTNAME" value="Gaits"/>
     </php>
     <coverage cacheDirectory=".phpunit.cache/code-coverage"
               processUncoveredFiles="true">

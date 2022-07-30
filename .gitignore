@@ -21,3 +21,4 @@
 /phpunit.xml
 .phpunit.cache/
 ###< symfony/phpunit-bridge ###
+phpunit.xml
