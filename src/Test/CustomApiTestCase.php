@@ -15,7 +15,6 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class CustomApiTestCase extends ApiTestCase
 {
-
     /**
      * @throws Exception
      */
@@ -25,9 +24,9 @@ class CustomApiTestCase extends ApiTestCase
         $em = $container->get('doctrine')->getManager();
         $user = new User();
         $user->setEmail($email);
-        $user->setFirstName(substr($email, 0 , strpos($email, '.')));
+        $user->setFirstName(substr($email, 0, strpos($email, '.')));
         $lastNameOffset =  strpos($email, '.');
-        $user->setLastName(substr($email, $lastNameOffset , strpos($email, '@', $lastNameOffset)));
+        $user->setLastName(substr($email, $lastNameOffset, strpos($email, '@', $lastNameOffset)));
         $user->setCreatedAt(new DateTimeImmutable());
         $user->setUpdatedAt(new DateTimeImmutable());
         $encoded = $container->get('security.password_hasher')->hashPassword($user, $password);
@@ -36,7 +35,6 @@ class CustomApiTestCase extends ApiTestCase
         $em->persist($user);
         $em->flush();
         return $user;
-
     }
 
     /**
@@ -47,7 +45,7 @@ class CustomApiTestCase extends ApiTestCase
         $container = static::getContainer();
         $em = $container->get('doctrine')->getManager();
         $account = new Account();
-        $account->setName(substr($primaryEmail, 0 , strpos($primaryEmail, '@')));
+        $account->setName(substr($primaryEmail, 0, strpos($primaryEmail, '@')));
         $account->setPrimaryEmail($primaryEmail);
         $account->setCreatedAt(new DateTimeImmutable());
         $account->setUpdatedAt(new DateTimeImmutable());
@@ -65,7 +63,7 @@ class CustomApiTestCase extends ApiTestCase
      */
     public function getJWTToken(User $user, Client $client): string
     {
-        $response = $client->request('POST', '/api/login_check',[
+        $response = $client->request('POST', '/api/login_check', [
             'headers' => ['Content-Type' => 'application/json'],
             'json' => [
                 'username' => $user->getEmail(),
@@ -105,8 +103,7 @@ class CustomApiTestCase extends ApiTestCase
     protected function createUserAndLogIn(Client $client, string $email, string $password, string $primaryEmail): string
     {
         $account = $this->createAccount($primaryEmail);
-        $user = $this->createUser( $email, $password, $account);
+        $user = $this->createUser($email, $password, $account);
         return $this->getJWTToken($user, $client);
     }
-
 }
