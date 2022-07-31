@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     attributes: [
         'pagination_items_per_page' => 10,
-        'formats' => ['json'],
+        'formats' => ['json', 'jsonld'],
     ],
     denormalizationContext: ['groups' => [ 'user:write']],
     normalizationContext: ['groups' => [ 'user:read']],
@@ -54,7 +54,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(targetEntity: Account::class, cascade: ['persist'], inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\Valid()]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'user:write'])]
     private ?Account $account;
 
     #[Assert\NotBlank()]
@@ -73,7 +73,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?DateTimeImmutable $createdAt;
 
     #[ORM\Column(type: 'datetime_immutable')]
-    #[Gedmo\Timestampable(on: 'change', field: ['email', 'roles', 'password', 'account', 'firstName', 'lastName'])]
+    #[Gedmo\Timestampable(on: 'update', field: ['email', 'roles', 'password', 'account', 'firstName', 'lastName'])]
     #[Groups(['user:read'])]
     private ?DateTimeImmutable $updatedAt;
 

@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     itemOperations: ['get'],
     attributes: [
         'pagination_items_per_page' => 10,
-        'formats' => ['json'],
+        'formats' => ['json', 'jsonld'],
     ],
 )]
 #[ApiFilter(BooleanFilter::class, properties: ['available'])]
@@ -45,7 +45,7 @@ class Product
     private ?DateTimeImmutable $createdAt;
 
     #[ORM\Column(type: 'datetime_immutable')]
-    #[Gedmo\Timestampable(on: 'change', field: ['name', 'description', 'price', 'category', 'brand', 'sku', 'available'])]
+    #[Gedmo\Timestampable(on: 'update', field: ['name', 'description', 'price', 'category', 'brand', 'sku', 'available'])]
     private ?DateTimeImmutable $updatedAt;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]

@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Tests\Functional;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
+use App\Test\CustomApiTestCase;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 /**
  * @covers \App\Entity\Account
  */
-class AccountTest extends ApiTestCase
+class AccountTest extends CustomApiTestCase
 {
     /**
      * @throws TransportExceptionInterface
