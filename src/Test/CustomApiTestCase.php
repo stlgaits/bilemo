@@ -22,6 +22,7 @@ class CustomApiTestCase extends ApiTestCase
      */
     public function createUser(string $email, string $password, Account $account): User
     {
+        $container = static::getContainer();
         $em = $this->getEntityManager();
         $user = new User();
         $user->setEmail($email);
