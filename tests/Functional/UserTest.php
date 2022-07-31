@@ -70,7 +70,8 @@ class UserTest extends CustomApiTestCase
     {
         $client = self::createClient();
         $container = static::getContainer();
-        $loggedInUserJWTToken = $this->createUserAndLogIn($client,
+        $loggedInUserJWTToken = $this->createUserAndLogIn(
+            $client,
             "already.register@email.com",
             "choucroute",
             "test@company.com"

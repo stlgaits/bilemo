@@ -101,7 +101,7 @@ class CustomApiTestCase extends ApiTestCase
     /**
      * @throws Exception
      */
-    protected function  getEntityManager(): EntityManagerInterface
+    protected function getEntityManager(): EntityManagerInterface
     {
         return static::getContainer()->get('doctrine')->getManager();
     }
