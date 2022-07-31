@@ -7,6 +7,8 @@ use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\Client;
 use App\Entity\Account;
 use App\Entity\User;
 use DateTimeImmutable;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
@@ -20,8 +22,7 @@ class CustomApiTestCase extends ApiTestCase
      */
     public function createUser(string $email, string $password, Account $account): User
     {
-        $container = static::getContainer();
-        $em = $container->get('doctrine')->getManager();
+        $em = $this->getEntityManager();
         $user = new User();
         $user->setEmail($email);
         $user->setFirstName(substr($email, 0, strpos($email, '.')));
@@ -42,8 +43,7 @@ class CustomApiTestCase extends ApiTestCase
      */
     public function createAccount(string $primaryEmail): Account
     {
-        $container = static::getContainer();
-        $em = $container->get('doctrine')->getManager();
+        $em = $this->getEntityManager();
         $account = new Account();
         $account->setName(substr($primaryEmail, 0, strpos($primaryEmail, '@')));
         $account->setPrimaryEmail($primaryEmail);
@@ -76,22 +76,6 @@ class CustomApiTestCase extends ApiTestCase
         return $response->token;
     }
 
-//    /**
-//     * @throws TransportExceptionInterface
-//     */
-//    public function logIn(Client $client, string $email, string $password)
-//    {
-//        $client->request('POST', '/api/login_check',[
-//            'headers' => ['Content-Type' => 'application/json'],
-//            'json' => [
-//                'username' => $email,
-//                'password' => $password
-//            ],
-//        ]);
-//
-//        $this->assertResponseStatusCodeSame(204);
-//    }
-
     /**
      * @throws TransportExceptionInterface
      * @throws ServerExceptionInterface
@@ -105,5 +89,13 @@ class CustomApiTestCase extends ApiTestCase
         $account = $this->createAccount($primaryEmail);
         $user = $this->createUser($email, $password, $account);
         return $this->getJWTToken($user, $client);
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function  getEntityManager(): EntityManagerInterface
+    {
+        return static::getContainer()->get('doctrine')->getManager();
     }
 }
