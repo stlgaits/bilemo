@@ -69,7 +69,7 @@ class ProductTest extends CustomApiTestCase
             $account
         );
 
-        $response = $this->getJWTToken($user, $client);
+        $response = $this->getJWTToken($user, $client, 'password');
 
         $this->assertResponseStatusCodeSame(200);
     }
@@ -87,7 +87,7 @@ class ProductTest extends CustomApiTestCase
             'password',
             $account
         );
-        $token = $this->getJWTToken($testUser, $client);
+        $token = $this->getJWTToken($testUser, $client, 'password');
 
         $response = $client->request('GET', '/api/products', [
             'headers' => [

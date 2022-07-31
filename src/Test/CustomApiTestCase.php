@@ -7,7 +7,6 @@ use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\Client;
 use App\Entity\Account;
 use App\Entity\User;
 use DateTimeImmutable;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
@@ -62,13 +61,13 @@ class CustomApiTestCase extends ApiTestCase
      * @throws RedirectionExceptionInterface
      * @throws ClientExceptionInterface
      */
-    public function getJWTToken(User $user, Client $client): string
+    public function getJWTToken(User $user, Client $client, string $password): string
     {
         $response = $client->request('POST', '/api/login_check', [
             'headers' => ['Content-Type' => 'application/json'],
             'json' => [
                 'username' => $user->getEmail(),
-                'password' => 'password'
+                'password' => $password
             ],
         ]);
 
@@ -89,7 +88,14 @@ class CustomApiTestCase extends ApiTestCase
     {
         $account = $this->createAccount($primaryEmail);
         $user = $this->createUser($email, $password, $account);
-        return $this->getJWTToken($user, $client);
+        $token =  $this->getJWTToken($user, $client, $password);
+        $this->assertNotNull($user);
+        $this->assertInstanceOf(User::class, $user);
+        $this->assertInstanceOf(Account::class, $account);
+        $this->assertNotNull($account);
+        $this->assertNotNull($token);
+        $this->assertIsString($token);
+        return $token;
     }
 
     /**
