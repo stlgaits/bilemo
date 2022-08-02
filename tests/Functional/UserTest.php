@@ -163,6 +163,8 @@ class UserTest extends CustomApiTestCase
      * @throws RedirectionExceptionInterface
      * @throws ClientExceptionInterface
      * @throws Exception
+     * @TODO
+     * still not passing yet
      */
     public function testUserCannotCreateUserOnDifferentAccount()
     {
@@ -229,6 +231,7 @@ class UserTest extends CustomApiTestCase
         $user->setFirstName('Louise');
         $user->setLastName('Kick');
         $em = $this->getEntityManager();
+        // we purposefully forget the Account field
         $response = $client->request('POST', '/api/users', [
             'headers' => [
                 'Content-Type' => 'application/json',
@@ -241,8 +244,8 @@ class UserTest extends CustomApiTestCase
                 'lastName' =>   $user->getLastName(),
             ]
         ]);
-
-        $this->assertResponseStatusCodeSame(400);
+        // Should throw "account: This value should not be blank."
+        $this->assertResponseStatusCodeSame(422);
     }
 
 }
