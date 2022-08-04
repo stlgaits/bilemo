@@ -18,7 +18,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     collectionOperations: [],
     itemOperations: ['get' => [
-        'security' => 'is_granted("ROLE_ADMIN") or object === user.getAccount()',
+        'security' => 'is_granted("ROLE_ADMIN") or object == user.getAccount()',
         'security_message' => 'Sorry, you can only access your own Account.',
         ]
     ],

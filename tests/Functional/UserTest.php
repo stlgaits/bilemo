@@ -163,8 +163,7 @@ class UserTest extends CustomApiTestCase
      * @throws RedirectionExceptionInterface
      * @throws ClientExceptionInterface
      * @throws Exception
-     * @TODO
-     * still not passing yet
+     * @TODO still not passing yet
      */
     public function testUserCannotCreateUserOnDifferentAccount()
     {
@@ -248,4 +247,100 @@ class UserTest extends CustomApiTestCase
         $this->assertResponseStatusCodeSame(422);
     }
 
+
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws Exception
+     */
+    public function testUserCanDeleteThemselves() {
+        $client = self::createClient();
+        $container = static::getContainer();
+        $loggedInUserJWTToken = $this->createUserAndLogIn(
+            $client,
+            "marc.zucko34@email.com",
+            "cabbage",
+            "contact@facebook.com"
+        );
+        $user = $this->getEntityManager()->getRepository(User::class)->findOneBy(['email' => 'marc.zucko34@email.com']);
+        $response = $client->request('DELETE', '/api/users/'.$user->getId(), [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer '.$loggedInUserJWTToken
+            ]
+        ]);
+        // User's account should be deleted
+        $this->assertResponseStatusCodeSame(204);
+    }
+
+    public function testCannotDeleteUserWithoutJWTHeader()
+    {
+        $client = self::createClient();
+        $container = static::getContainer();
+        $loggedInUserJWTToken = $this->createUserAndLogIn(
+            $client,
+            "marc.zucko34@email.com",
+            "cabbage",
+            "contact@facebook.com"
+        );
+        $user = $this->getEntityManager()->getRepository(User::class)->findOneBy(['email' => 'marc.zucko34@email.com']);
+        $response = $client->request('DELETE', '/api/users/'.$user->getId(), [
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ]
+        ]);
+        $this->assertResponseStatusCodeSame(401);
+    }
+
+    /**
+     * @throws TransportExceptionInterface
+     * @throws Exception
+     */
+    public function testCannotDeleteUserWithoutAuth()
+    {
+        $client = self::createClient();
+        $container = static::getContainer();
+        $account = $this->createAccount('marc.laborde@fnac.com');
+        $user = $this->createUser('lori.vandenbeck@gmail.com', 'banana', $account);
+        $response = $client->request('DELETE', '/api/users/'.$user->getId(), [
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ]
+        ]);
+        $this->assertResponseStatusCodeSame(401);
+    }
+
+
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws Exception
+     */
+    public function testUserCannotDeleteAnotherUser()
+    {
+        $client = self::createClient();
+        $container = static::getContainer();
+        $loggedInUserJWTToken = $this->createUserAndLogIn(
+            $client,
+            "marc.zucko34@email.com",
+            "cabbage",
+            "contact@facebook.com"
+        );
+        $account2 = $this->createAccount("admin@spacex.com");
+        $user2 = $this->createUser('elon.musk77@spacex.com', 'potato', $account2);
+        $user1 = $this->getEntityManager()->getRepository(User::class)->findOneBy(['email' => 'marc.zucko34@email.com']);
+        $user2 = $this->getEntityManager()->getRepository(User::class)->findOneBy(['email' => 'elon.musk77@spacex.com']);
+        $response = $client->request('DELETE', '/api/users/'.$user2->getId(), [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer '.$loggedInUserJWTToken
+            ]
+        ]);
+        // User 2's account shouldn't be deleted
+        $this->assertResponseStatusCodeSame(403);
+    }
 }
