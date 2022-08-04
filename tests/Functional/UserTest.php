@@ -202,7 +202,7 @@ class UserTest extends CustomApiTestCase
             ]
         ]);
 
-        // Access control
+        // Access control: the user should only be allowed to create a user with the same Account
         $this->assertResponseStatusCodeSame(403);
     }
 

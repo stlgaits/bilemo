@@ -19,10 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     collectionOperations: [
         "get",
-        "post" => [
-//            "security" => "is_granted('ROLE_ADMIN') or object.getAccount() == user.getAccount()",
-//            "security_message" => "Sorry, you can only create users belonging to your own Account.",
-        ]
+        "post" => []
     ],
     itemOperations: [
         "get",

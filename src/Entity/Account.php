@@ -17,10 +17,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: AccountRepository::class)]
 #[ApiResource(
     collectionOperations: [],
-    itemOperations: ['get'],
+    itemOperations: ['get' => [
+        'security' => 'is_granted("ROLE_ADMIN") or object === user.getAccount()',
+        'security_message' => 'Sorry, you can only access your own Account.',
+        ]
+    ],
     attributes: [
         'pagination_items_per_page' => 10,
-        'formats' => ['json']
+        'formats' => ['json', 'jsonld']
     ]
 )]
 #[UniqueEntity(fields: ['name'])]
