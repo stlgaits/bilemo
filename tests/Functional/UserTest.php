@@ -275,6 +275,13 @@ class UserTest extends CustomApiTestCase
         $this->assertResponseStatusCodeSame(204);
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws Exception
+     */
     public function testCannotDeleteUserWithoutJWTHeader()
     {
         $client = self::createClient();

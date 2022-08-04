@@ -19,6 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     collectionOperations: [
         "get",
+        // unable to implement access control on POST collection operations => will probably need a voter
         "post" => []
     ],
     itemOperations: [
