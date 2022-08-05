@@ -18,13 +18,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
     collectionOperations: [
+        // need to find a way to only return users linked to current user's own account
         "get",
-        // unable to implement access control on POST collection operations => will probably need a voter
-        "post" => []
+        "post" => ["security" => "is_granted('USER_CREATE', object)"]
     ],
     itemOperations: [
-        "get",
-        "delete" => ["security" => "is_granted('ROLE_ADMIN') or object == user"],
+        "get" =>  ["security" => "is_granted('USER_VIEW', object)"],
+        "delete" => ["security" => "is_granted('USER_DELETE', object)"],
     ],
     attributes: [
         'pagination_items_per_page' => 10,
