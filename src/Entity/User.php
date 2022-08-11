@@ -13,6 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -21,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         // need to find a way to only return users linked to current user's own account
         "get",
         "post" => [
-//            "security" => "is_granted('CREATE', object)"
+            "security" => "is_granted('CREATE', object)"
         ]
     ],
     itemOperations: [
@@ -58,7 +59,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $password;
 
     #[Groups(['user:write'])]
-//    #[Assert\NotBlank()]
+    #[Assert\NotBlank()]
+    #[SerializedName("password")]
     private ?string $plainPassword;
 
     #[ORM\ManyToOne(targetEntity: Account::class, cascade: ['persist'], inversedBy: 'users')]

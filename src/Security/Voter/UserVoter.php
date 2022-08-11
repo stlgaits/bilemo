@@ -71,8 +71,8 @@ class UserVoter extends Voter
                 if ($this->security->isGranted('ROLE_ADMIN')) {
                     return true;
                 }
+                return false;
                 break;
-            return false;
         }
 
         throw new Exception(sprintf('Unhandled attribute "%s"', $attribute));
