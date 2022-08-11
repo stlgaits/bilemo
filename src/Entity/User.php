@@ -20,7 +20,9 @@ use Symfony\Component\Validator\Constraints as Assert;
     collectionOperations: [
         // need to find a way to only return users linked to current user's own account
         "get",
-        "post" => ["security" => "is_granted('CREATE', object)"]
+        "post" => [
+//            "security" => "is_granted('CREATE', object)"
+        ]
     ],
     itemOperations: [
         "get" =>  ["security" => "is_granted('VIEW', object)"],
@@ -54,6 +56,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:write'])]
     #[Assert\NotBlank()]
     private string $password;
+
+    #[Groups(['user:write'])]
+//    #[Assert\NotBlank()]
+    private string $plainPassword;
 
     #[ORM\ManyToOne(targetEntity: Account::class, cascade: ['persist'], inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
@@ -90,6 +96,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getEmail(): ?string
     {
         return $this->email;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * @param string $plainPassword
+     * @return User
+     */
+    public function setPlainPassword(string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
     }
 
     public function setEmail(string $email): self

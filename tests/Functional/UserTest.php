@@ -247,7 +247,6 @@ class UserTest extends CustomApiTestCase
         $this->assertResponseStatusCodeSame(422);
     }
 
-
     /**
      * @throws TransportExceptionInterface
      * @throws ServerExceptionInterface
@@ -318,7 +317,6 @@ class UserTest extends CustomApiTestCase
         ]);
         $this->assertResponseStatusCodeSame(401);
     }
-
 
     /**
      * @throws TransportExceptionInterface
