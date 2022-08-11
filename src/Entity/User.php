@@ -20,11 +20,11 @@ use Symfony\Component\Validator\Constraints as Assert;
     collectionOperations: [
         // need to find a way to only return users linked to current user's own account
         "get",
-        "post" => ["security" => "is_granted('USER_CREATE', object)"]
+        "post" => ["security" => "is_granted('CREATE', object)"]
     ],
     itemOperations: [
-        "get" =>  ["security" => "is_granted('USER_VIEW', object)"],
-        "delete" => ["security" => "is_granted('USER_DELETE', object)"],
+        "get" =>  ["security" => "is_granted('VIEW', object)"],
+        "delete" => ["security" => "is_granted('DELETE', object)"],
     ],
     attributes: [
         'pagination_items_per_page' => 10,

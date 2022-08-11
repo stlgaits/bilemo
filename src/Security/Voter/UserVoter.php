@@ -11,9 +11,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserVoter extends Voter
 {
-    public const USER_VIEW = 'USER_VIEW';
-    public const USER_CREATE = 'USER_CREATE';
-    public const USER_DELETE = 'USER_DELETE';
+    public const VIEW = 'VIEW';
+    public const CREATE = 'CREATE';
+    public const DELETE = 'DELETE';
 
     private Security $security;
 
@@ -24,9 +24,9 @@ class UserVoter extends Voter
     protected function supports(string $attribute, $subject): bool
     {
         return in_array($attribute, [
-            self::USER_VIEW,
-            self::USER_CREATE,
-            self::USER_DELETE
+            self::VIEW,
+            self::CREATE,
+            self::DELETE
             ])
             && $subject instanceof User;
     }
@@ -45,7 +45,7 @@ class UserVoter extends Voter
         /** @var User $subject */
 
         switch ($attribute) {
-            case self::USER_VIEW:
+            case self::VIEW:
                 if($subject->getAccount() === $user->getAccount()) {
                     return true;
                 }
@@ -54,7 +54,7 @@ class UserVoter extends Voter
                 }
                 return false;
                 break;
-            case self::USER_CREATE:
+            case self::CREATE:
                 if($subject->getAccount() === $user->getAccount()) {
                     return true;
                 }
@@ -64,7 +64,7 @@ class UserVoter extends Voter
                 }
                 return false;
                 break;
-            case self::USER_DELETE:
+            case self::DELETE:
                 if ($subject === $user) {
                     return true;
                 }
