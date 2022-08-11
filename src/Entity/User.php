@@ -59,7 +59,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[Groups(['user:write'])]
 //    #[Assert\NotBlank()]
-    private string $plainPassword;
+    private ?string $plainPassword;
 
     #[ORM\ManyToOne(targetEntity: Account::class, cascade: ['persist'], inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
@@ -174,7 +174,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+         $this->plainPassword = null;
     }
 
     public function getAccount(): ?Account
