@@ -25,45 +25,6 @@ class UserTest extends CustomApiTestCase
 
     /**
      * @throws TransportExceptionInterface
-     */
-    public function testReadUsersWithNoJWTToken(): void
-    {
-        $response = static::createClient()->request('GET', '/api/users');
-        $this->assertResponseStatusCodeSame(401);
-    }
-
-    /**
-     * @throws ClientExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
-     */
-    public function testCreateUserViaPostRequestWithoutJWT()
-    {
-        $container = static::getContainer();
-        $user = new User();
-        $user->setEmail('joe.cook@gmail.com');
-        $password = 'porridge';
-        $encoded = $container->get('security.password_hasher')->hashPassword($user, $password);
-        $user->setPassword($encoded);
-        $user->setFirstName('Joe');
-        $user->setLastName('Cook');
-        $response = static::createClient()->request('POST', '/api/users', [
-            'json' => [
-                'email' => $user->getEmail(),
-                'password' =>   $user->getPassword(),
-                'firstName' =>  $user->getFirstName(),
-                'lastName' =>   $user->getLastName()
-            ]
-        ]);
-
-        $this->assertResponseStatusCodeSame(401);
-        $this->assertJsonContains(["message" => "JWT Token not found"]);
-    }
-
-    /**
-     * @throws TransportExceptionInterface
      * @throws ServerExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ClientExceptionInterface
@@ -107,6 +68,144 @@ class UserTest extends CustomApiTestCase
             ]
         ]);
         $this->assertResponseStatusCodeSame(201);
+    }
+
+    /**
+     * @throws TransportExceptionInterface
+     * @throws Exception
+     */
+    public function testSuperAdminCanReadAllUsersWithJWTAuth(): void
+    {
+        $client = self::createClient();
+        $account = $this->createAccount("contact@escadenca.fr");
+        $user = $this->createUser("estelle.gaits@escadenca.fr", "thisisatestpassword", $account);
+        $user->setRoles(['ROLE_SUPER_ADMIN']);
+        $jwtToken = $this->getJWTToken($user, $client, $user->getPassword());
+        $response = $client->request('GET', '/api/users', [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Bearer '.$jwtToken
+                ]
+            ]);
+        $this->assertResponseStatusCodeSame(200);
+        $this->assertResponseIsSuccessful();
+    }
+
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws Exception
+     */
+    public function testReadUsersFromSameAccountWithJWTAuth(): void
+    {
+        $client = self::createClient();
+        $account = $this->createAccount("contact@escadenca.fr");
+        $user = $this->createUser("geraldine.gaits@escadenca.fr", "thisisatestpassword", $account);
+        $user->setRoles(['ROLE_SUPER_ADMIN']);
+        $jwtToken = $this->getJWTToken($user, $client, $user->getPassword());
+        $accountId = $user->getAccount()->getId();
+        $response = $client->request("GET", "/api/account/$accountId/users", [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer '.$jwtToken
+            ]
+        ]);
+        $this->assertResponseStatusCodeSame(200);
+        $this->assertResponseIsSuccessful();
+    }
+
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws Exception
+     */
+    public function testCannotReadUsersFromAccountDifferentThanOwn(): void
+    {
+        $client = self::createClient();
+        $account = $this->createAccount("contact@escadenca.fr");
+        $user = $this->createUser("laurent.gaits@escadenca.fr", "thisisatestpassword", $account);
+        $user->setRoles(['ROLE_SUPER_ADMIN']);
+        $jwtToken = $this->getJWTToken($user, $client, $user->getPassword());
+        $accountId = $user->getAccount()->getId();
+        $otherAccountId = 2;
+        $response = $client->request("GET", "/api/account/$otherAccountId/users", [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer '.$jwtToken
+            ]
+        ]);
+        $this->assertResponseStatusCodeSame(403);
+    }
+
+    /**
+     * @throws TransportExceptionInterface
+     * @throws Exception
+     * @throws DecodingExceptionInterface
+     */
+    public function testReadOneUserFromSameAccountWithJWTAuth(): void
+    {
+        $client = self::createClient();
+        $account = $this->createAccount("contact@escadenca.fr");
+        $user = $this->createUser("nicolas.gaits@escadenca.fr", "thisisatestpassword", $account);
+        $jwtToken = $this->getJWTToken($user, $client, $user->getPassword());
+        $accountId = $user->getAccount()->getId();
+        $otherUser = $this->createUser("michel.vaillant@escadenca.fr", "myvoiceismypassword", $account);
+        $otherUserId = $otherUser->getId();
+        $response = $client->request("GET", "/api/accounts/$accountId/users/$otherUserId", [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer '.$jwtToken
+            ]
+        ]);
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseStatusCodeSame(200);
+        $this->assertJsonContains([
+            "email" => "michel.vaillant@escadenca.fr",
+            "password" => "myvoiceismypassword",
+        ]);
+    }
+
+    /**
+     * @throws TransportExceptionInterface
+     */
+    public function testCannotReadUsersWithNoJWTToken(): void
+    {
+        $response = static::createClient()->request('GET', '/api/users');
+        $this->assertResponseStatusCodeSame(401);
+    }
+
+    /**
+     * @throws ClientExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
+    public function testCannotCreateUserViaPostRequestWithoutJWT()
+    {
+        $container = static::getContainer();
+        $user = new User();
+        $user->setEmail('joe.cook@gmail.com');
+        $password = 'porridge';
+        $encoded = $container->get('security.password_hasher')->hashPassword($user, $password);
+        $user->setPassword($encoded);
+        $user->setFirstName('Joe');
+        $user->setLastName('Cook');
+        $response = static::createClient()->request('POST', '/api/users', [
+            'json' => [
+                'email' => $user->getEmail(),
+                'password' =>   $user->getPassword(),
+                'firstName' =>  $user->getFirstName(),
+                'lastName' =>   $user->getLastName()
+            ]
+        ]);
+
+        $this->assertResponseStatusCodeSame(401);
+        $this->assertJsonContains(["message" => "JWT Token not found"]);
     }
 
     /**
@@ -165,7 +264,7 @@ class UserTest extends CustomApiTestCase
      * @throws Exception
      * @TODO still not passing yet
      */
-    public function testUserCannotCreateUserOnDifferentAccount()
+    public function testCannotCreateUserOnDifferentAccountThanOwn()
     {
         $client = self::createClient();
         $container = static::getContainer();
