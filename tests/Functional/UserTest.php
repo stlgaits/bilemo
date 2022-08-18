@@ -61,7 +61,7 @@ class UserTest extends CustomApiTestCase
             ],
             'json' => [
                 'email' => $user->getEmail(),
-                'password' =>   $user->getPassword(),
+                'password' =>   $password,
                 'firstName' =>  $user->getFirstName(),
                 'lastName' =>   $user->getLastName(),
                 'account' => $accountIri
@@ -80,7 +80,7 @@ class UserTest extends CustomApiTestCase
         $account = $this->createAccount("contact@escadenca.fr");
         $user = $this->createUser("estelle.gaits@escadenca.fr", "thisisatestpassword", $account);
         $user->setRoles(['ROLE_SUPER_ADMIN']);
-        $jwtToken = $this->getJWTToken($user, $client, $user->getPassword());
+        $jwtToken = $this->getJWTToken($user, $client, "thisisatestpassword");
         $response = $client->request('GET', '/api/users', [
                 'headers' => [
                     'Content-Type' => 'application/json',

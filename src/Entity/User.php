@@ -54,8 +54,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private array $roles = [];
 
     #[ORM\Column(type: 'string')]
-    #[Groups(['user:write'])]
-    #[Assert\NotBlank()]
+    // #[Groups(['user:write'])]
+    // #[Assert\NotBlank()]
     private string $password;
 
     #[Groups(['user:write'])]

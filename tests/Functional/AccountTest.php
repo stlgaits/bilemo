@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional;
 
-use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\Account;
-use App\Entity\User;
 use App\Test\CustomApiTestCase;
 use Exception;
+use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
@@ -19,6 +18,9 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
  */
 class AccountTest extends CustomApiTestCase
 {
+
+    use ReloadDatabaseTrait;
+
     /**
      * @throws TransportExceptionInterface
      */
@@ -45,6 +47,7 @@ class AccountTest extends CustomApiTestCase
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
      * @throws Exception
+     * @throws \Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface
      * A user should be able to access their own Account (but no other)
      */
     public function testReadUsersOwnAccountWithJWTAuthToken(): void
@@ -67,6 +70,13 @@ class AccountTest extends CustomApiTestCase
 
         // Only the current user's account should be readable
         $this->assertResponseStatusCodeSame(200);
+        $this->assertJsonContains(['primaryEmail' => 'contact@orange.com']);
+        $data = $client->getResponse()->toArray();
+        $this->assertArrayHasKey("industry", $data);
+        $this->assertArrayHasKey("description", $data);
+        $this->assertArrayHasKey("name", $data);
+        $this->assertArrayHasKey("users", $data);
+        $this->assertArrayHasKey("createdAt", $data);
     }
 
     /**

@@ -33,6 +33,8 @@ class UserDataPersister implements DataPersisterInterface
      */
     public function persist($data)
     {
+        // this only applies in the context of API requests, when persisting an Entity manually,
+        // the traditional method prevails (setting $password to a hashed pwd manually)
         if ($data->getPlainPassword()) {
             $data->setPassword($this->userPasswordHasher->hashPassword($data, $data->getPlainPassword()));
             // the plain password isn't saved into the database but this is used as a cautious, preventive measure
