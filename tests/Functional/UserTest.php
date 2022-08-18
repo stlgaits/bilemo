@@ -41,12 +41,12 @@ class UserTest extends CustomApiTestCase
             "test@company.com"
         );
         $user = new User();
-        $user->setEmail('joe.cook@gmail.com');
+        $user->setEmail('james.gandolfini@gmail.com');
         $password = 'porridge';
         $encoded = $container->get('security.password_hasher')->hashPassword($user, $password);
         $user->setPassword($encoded);
-        $user->setFirstName('Joe');
-        $user->setLastName('Cook');
+        $user->setFirstName('James');
+        $user->setLastName('Gandolfini');
         $em = $this->getEntityManager();
         $accountRepository = $em->getRepository(Account::class);
         $account = $accountRepository->findOneBy(['primaryEmail' =>  "test@company.com"]);
@@ -73,13 +73,18 @@ class UserTest extends CustomApiTestCase
     /**
      * @throws TransportExceptionInterface
      * @throws Exception
+     * @throws DecodingExceptionInterface
      */
     public function testSuperAdminCanReadAllUsersWithJWTAuth(): void
     {
         $client = self::createClient();
         $account = $this->createAccount("contact@escadenca.fr");
+        $account2 = $this->createAccount("contact@otheraccount.fr");
         $user = $this->createUser("estelle.gaits@escadenca.fr", "thisisatestpassword", $account);
         $user->setRoles(['ROLE_SUPER_ADMIN']);
+        for ($i = 0 ; $i < 5 ; $i++) {
+            $this->createUser("user$i@cdiscount.fr", "thisisatestpwd", $account2);
+        }
         $jwtToken = $this->getJWTToken($user, $client, "thisisatestpassword");
         $response = $client->request('GET', '/api/users', [
                 'headers' => [
@@ -89,6 +94,78 @@ class UserTest extends CustomApiTestCase
             ]);
         $this->assertResponseStatusCodeSame(200);
         $this->assertResponseIsSuccessful();
+        // Asserts that the returned content type is JSON-LD (the default)
+        $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
+        // Asserts that the returned JSON is a superset of this one
+        $this->assertJsonContains([
+            '@context' => '/api/contexts/User',
+            '@id' => '/api/users',
+            '@type' => 'hydra:Collection',
+            'hydra:totalItems' => 6,
+            'hydra:member' => [
+                0 => [
+                    '@id' => '/api/users/1',
+                    '@type' => 'User',
+                    'email' => 'estelle.gaits@escadenca.fr',
+                ]
+            ]
+        ]);
+    }
+
+    /**
+     * @throws TransportExceptionInterface
+     * @throws Exception
+     * @throws DecodingExceptionInterface
+     * @TODO : this test currently fails as All Users are returned instead of only the Admin's account users
+     */
+    public function testAdminCanOnlyReadUsersFromSameAccount(): void
+    {
+        $client = self::createClient();
+        $account = $this->createAccount("contact@escadenca.fr");
+        $account2 = $this->createAccount("contact@cdiscount.fr");
+        $user = $this->createUser("admin@escadenca.fr", "thisisatestpassword", $account);
+        $user->setRoles(['ROLE_ADMIN']);
+        $jwtToken = $this->getJWTToken($user, $client, "thisisatestpassword");
+        $userWithSameAccount = $this->createUser("user1@escadenca.fr","thisisatestpassword", $account);
+        $usersWithDifferentAccount = [];
+        for ($i = 0 ; $i < 5 ; $i++) {
+            $newUser = $this->createUser("user$i@cdiscount.fr", "thisisatestpwd", $account2);
+            $usersWithDifferentAccount[$i] = $newUser;
+        }
+        $response = $client->request('GET', '/api/users', [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Bearer '.$jwtToken
+                ]
+            ]);
+        $this->assertResponseStatusCodeSame(200);
+        $this->assertResponseIsSuccessful();
+        $data = $client->getResponse()->toArray();
+        $readableUsers = $data['hydra:member'];
+        $this->assertArrayHasKey('account', $readableUsers[0]);
+        $this->assertArrayNotHasKey('roles', $readableUsers[0]);
+        $this->assertCount(5, $usersWithDifferentAccount);
+        $this->assertCount(2, $readableUsers);
+        // Asserts that the returned content type is JSON-LD (the default)
+        $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
+        // Asserts that the returned JSON is a superset of this one
+        $this->assertJsonContains([
+            '@context' => '/api/contexts/User',
+            '@id' => '/api/users',
+            '@type' => 'hydra:Collection',
+            'hydra:totalItems' => 2,
+            'hydra:member' => [
+                0 => [
+                    '@id' => '/api/users/1',
+                    '@type' => 'User',
+                    'email' => 'admin@escadenca.fr',
+                ]
+            ]
+        ]);
+
+        // Asserts that the returned JSON is validated by the JSON Schema generated for this resource by API Platform
+        // This generated JSON Schema is also used in the OpenAPI spec!
+        $this->assertMatchesResourceCollectionJsonSchema(User::class);
     }
 
     /**
@@ -103,10 +180,10 @@ class UserTest extends CustomApiTestCase
         $client = self::createClient();
         $account = $this->createAccount("contact@escadenca.fr");
         $user = $this->createUser("geraldine.gaits@escadenca.fr", "thisisatestpassword", $account);
-        $user->setRoles(['ROLE_SUPER_ADMIN']);
-        $jwtToken = $this->getJWTToken($user, $client, $user->getPassword());
+        $user->setRoles(['ROLE_ADMIN']);
+        $jwtToken = $this->getJWTToken($user, $client, "thisisatestpassword");
         $accountId = $user->getAccount()->getId();
-        $response = $client->request("GET", "/api/account/$accountId/users", [
+        $response = $client->request("GET", "/api/accounts/$accountId/users", [
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Authorization' => 'Bearer '.$jwtToken
@@ -127,12 +204,13 @@ class UserTest extends CustomApiTestCase
     {
         $client = self::createClient();
         $account = $this->createAccount("contact@escadenca.fr");
+        $account2 = $this->createAccount("other@account.fr");
         $user = $this->createUser("laurent.gaits@escadenca.fr", "thisisatestpassword", $account);
-        $user->setRoles(['ROLE_SUPER_ADMIN']);
-        $jwtToken = $this->getJWTToken($user, $client, $user->getPassword());
+        $user->setRoles(['ROLE_ADMIN']);
+        $jwtToken = $this->getJWTToken($user, $client, "thisisatestpassword");
         $accountId = $user->getAccount()->getId();
         $otherAccountId = 2;
-        $response = $client->request("GET", "/api/account/$otherAccountId/users", [
+        $response = $client->request("GET", "/api/accounts/$otherAccountId/users", [
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Authorization' => 'Bearer '.$jwtToken
@@ -145,13 +223,15 @@ class UserTest extends CustomApiTestCase
      * @throws TransportExceptionInterface
      * @throws Exception
      * @throws DecodingExceptionInterface
+     * @TODO: the /api/accounts/{accountId}/users/{userId} IRI doesn't actually exist
+     * Need to find a way to sort users on /api/users by restricting to current account only
      */
     public function testReadOneUserFromSameAccountWithJWTAuth(): void
     {
         $client = self::createClient();
         $account = $this->createAccount("contact@escadenca.fr");
         $user = $this->createUser("nicolas.gaits@escadenca.fr", "thisisatestpassword", $account);
-        $jwtToken = $this->getJWTToken($user, $client, $user->getPassword());
+        $jwtToken = $this->getJWTToken($user, $client, "thisisatestpassword");
         $accountId = $user->getAccount()->getId();
         $otherUser = $this->createUser("michel.vaillant@escadenca.fr", "myvoiceismypassword", $account);
         $otherUserId = $otherUser->getId();

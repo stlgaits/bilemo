@@ -9,6 +9,7 @@ use App\Test\CustomApiTestCase;
 use Exception;
 use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
@@ -47,7 +48,7 @@ class AccountTest extends CustomApiTestCase
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
      * @throws Exception
-     * @throws \Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface
+     * @throws DecodingExceptionInterface
      * A user should be able to access their own Account (but no other)
      */
     public function testReadUsersOwnAccountWithJWTAuthToken(): void
