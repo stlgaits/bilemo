@@ -63,9 +63,13 @@ class Account
     #[ApiSubresource]
     private $users;
 
+    #[ORM\OneToMany(mappedBy: 'account', targetEntity: Customer::class, orphanRemoval: true)]
+    private $customers;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->customers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -169,6 +173,36 @@ class Account
             // set the owning side to null (unless already changed)
             if ($user->getAccount() === $this) {
                 $user->setAccount(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Customer>
+     */
+    public function getCustomers(): Collection
+    {
+        return $this->customers;
+    }
+
+    public function addCustomer(Customer $customer): self
+    {
+        if (!$this->customers->contains($customer)) {
+            $this->customers[] = $customer;
+            $customer->setAccount($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCustomer(Customer $customer): self
+    {
+        if ($this->customers->removeElement($customer)) {
+            // set the owning side to null (unless already changed)
+            if ($customer->getAccount() === $this) {
+                $customer->setAccount(null);
             }
         }
 
