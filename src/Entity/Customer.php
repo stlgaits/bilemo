@@ -6,39 +6,77 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CustomerRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CustomerRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        "get" => [
+            'security' => 'is_granted("ROLE_ADMIN") or object.getAccount() == user.getAccount()',
+            'security_message' => 'Sorry, you can only access Customers linked to your own Account.',
+        ],
+        "post"
+    ],
+    itemOperations: [
+        "get" => [
+            'security' => 'is_granted("ROLE_ADMIN") or object.getAccount() == user.getAccount()',
+            'security_message' => 'Sorry, you can only access Customers linked to your own Account.',
+        ],
+        "delete" => ["security" => "is_granted('ROLE_ADMIN') or object.getAccount() == user.getAccount()"],
+    ],
+    attributes: [
+        'pagination_items_per_page' => 10,
+        'formats' => ['json', 'jsonld'],
+    ],
+    denormalizationContext: ['groups' => [ 'customer:write']],
+    normalizationContext: ['groups' => [ 'customer:read']],
+)]
+#[UniqueEntity(fields: ['email'])]
 class Customer
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private ?int $id;
 
     #[ORM\Column(type: 'string', length: 255,  unique: true)]
-    private $email;
+    #[Groups(['customer:read', 'customer:write'])]
+    #[Assert\NotBlank()]
+    #[Assert\Email()]
+    private ?string $email;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $firstName;
+    #[Groups(['customer:read', 'customer:write'])]
+    #[Assert\NotBlank()]
+    private ?string $firstName;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $lastName;
+    #[Groups(['customer:read', 'customer:write'])]
+    #[Assert\NotBlank()]
+    private ?string $lastName;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $phoneNumber;
+    #[Groups(['customer:read', 'customer:write'])]
+    private ?string $phoneNumber;
 
     #[ORM\ManyToOne(targetEntity: Account::class, cascade: ['persist'], inversedBy: 'customers')]
     #[ORM\JoinColumn(nullable: false)]
-    private $account;
+    #[Groups(['customer:read'])]
+    #[Assert\Valid()]
+    #[Assert\NotBlank()]
+    private ?Account $account;
 
     #[ORM\Column(type: 'datetime_immutable')]
     #[Gedmo\Timestampable(on: 'create')]
-    private $createdAt;
+    #[Groups(['customer:read'])]
+    private ?\DateTimeImmutable $createdAt;
 
     #[ORM\Column(type: 'datetime_immutable')]
     #[Gedmo\Timestampable(on: 'update', field: ['email', 'phoneNumber', 'account', 'firstName', 'lastName'])]
-    private $updatedAt;
+    #[Groups(['customer:read'])]
+    private ?\DateTimeImmutable $updatedAt;
 
     public function getId(): ?int
     {
