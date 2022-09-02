@@ -61,19 +61,19 @@ class CustomApiTestCase extends ApiTestCase
      * @throws RedirectionExceptionInterface
      * @throws ClientExceptionInterface
      */
-    public function getJWTToken(User $user, Client $client, string $password): string
+    public function getJWTToken(User $user, Client $client, string $plainPassword): string
     {
         $response = $client->request('POST', '/api/login_check', [
             'headers' => ['Content-Type' => 'application/json'],
             'json' => [
                 'username' => $user->getEmail(),
-                'password' => $password
+                'password' => $plainPassword
             ],
         ]);
-
-        $response = json_decode($response->getContent());
-        $this->assertNotNull($response->token);
-        return $response->token;
+        $responseArray = json_decode($response->getContent());
+        $token = $responseArray->token;
+        $this->assertNotNull($token);
+        return $token;
     }
 
     /**

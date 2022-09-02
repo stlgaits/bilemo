@@ -13,18 +13,21 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
     collectionOperations: [
+        // need to find a way to only return users linked to current user's own account
         "get",
-        // unable to implement access control on POST collection operations => will probably need a voter
-        "post" => []
+        "post" => [
+            "security" => "is_granted('CREATE', object)"
+        ]
     ],
     itemOperations: [
-        "get",
-        "delete" => ["security" => "is_granted('ROLE_ADMIN') or object == user"],
+        "get" =>  ["security" => "is_granted('VIEW', object)"],
+        "delete" => ["security" => "is_granted('DELETE', object)"],
     ],
     attributes: [
         'pagination_items_per_page' => 10,
@@ -51,9 +54,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private array $roles = [];
 
     #[ORM\Column(type: 'string')]
+    // #[Groups(['user:write'])]
+    // #[Assert\NotBlank()]
+    private string $password;
+
     #[Groups(['user:write'])]
     #[Assert\NotBlank()]
-    private string $password;
+    #[SerializedName("password")]
+    private ?string $plainPassword;
 
     #[ORM\ManyToOne(targetEntity: Account::class, cascade: ['persist'], inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
@@ -90,6 +98,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getEmail(): ?string
     {
         return $this->email;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * @param string $plainPassword
+     * @return User
+     */
+    public function setPlainPassword(string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
     }
 
     public function setEmail(string $email): self
@@ -149,7 +176,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+         $this->plainPassword = null;
     }
 
     public function getAccount(): ?Account
