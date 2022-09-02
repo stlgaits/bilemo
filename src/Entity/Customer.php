@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CustomerRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: CustomerRepository::class)]
 #[ApiResource]
@@ -15,7 +16,7 @@ class Customer
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255,  unique: true)]
     private $email;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -27,14 +28,16 @@ class Customer
     #[ORM\Column(type: 'string', length: 255)]
     private $phoneNumber;
 
-    #[ORM\ManyToOne(targetEntity: Account::class, inversedBy: 'customers')]
+    #[ORM\ManyToOne(targetEntity: Account::class, cascade: ['persist'], inversedBy: 'customers')]
     #[ORM\JoinColumn(nullable: false)]
     private $account;
 
     #[ORM\Column(type: 'datetime_immutable')]
+    #[Gedmo\Timestampable(on: 'create')]
     private $createdAt;
 
     #[ORM\Column(type: 'datetime_immutable')]
+    #[Gedmo\Timestampable(on: 'update', field: ['email', 'phoneNumber', 'account', 'firstName', 'lastName'])]
     private $updatedAt;
 
     public function getId(): ?int
