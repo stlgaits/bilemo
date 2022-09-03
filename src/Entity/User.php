@@ -39,6 +39,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[UniqueEntity(fields: ['email'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    // TODO: init a first Account with a first Admin User with full access rights via constructor on Entity
+    // Prevent access to other Accounts (and IRI) via API => force creation on the very same account (unless super admin)
+    // init first account & admin users in fixtures
+    // tests: add a test where we check that the newly created user has the same account as the current user
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
