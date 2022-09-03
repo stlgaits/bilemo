@@ -1,18 +1,17 @@
 <?php
 
+
 namespace App\Doctrine;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
-use App\Entity\Account;
-use App\Entity\User;
-use Doctrine\ORM\Query\Expr\Join;
+use App\Entity\Customer;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Security;
 
 
-final class CurrentUserExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
+final class CurrentAccountCustomerExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
 {
 
     private Security $security;
@@ -35,15 +34,13 @@ final class CurrentUserExtension implements QueryCollectionExtensionInterface, Q
     private function addWhere(QueryBuilder $queryBuilder, string $resourceClass): void
     {
 
-        if (Account::class !== $resourceClass || $this->security->isGranted('ROLE_SUPER_ADMIN') || null === $user = $this->security->getUser()) {
+        if (Customer::class !== $resourceClass || $this->security->isGranted('ROLE_SUPER_ADMIN') || null === $user = $this->security->getUser()) {
             return;
         }
 
-        //@TODO: this doesn't actually work; the request is probably wrong
-        // the goal is to only return the current user's account instead of all accounts
+        // only return Customers from current user's Account
         $rootAlias = $queryBuilder->getRootAliases()[0];
-        $queryBuilder->andWhere('u.account = :user_account');
-        $queryBuilder->innerJoin(User::class, 'u', Join::WITH,  sprintf('u.account = %s.id', $rootAlias));
+        $queryBuilder->andWhere(sprintf('%s.account = :current_account', $rootAlias));
         $queryBuilder->setParameter('user_account', $user->getAccount());
 
     }
