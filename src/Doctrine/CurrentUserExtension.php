@@ -11,10 +11,8 @@ use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Security;
 
-
 final class CurrentUserExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
 {
-
     private Security $security;
 
     public function __construct(Security $security)
@@ -34,7 +32,6 @@ final class CurrentUserExtension implements QueryCollectionExtensionInterface, Q
 
     private function addWhere(QueryBuilder $queryBuilder, string $resourceClass): void
     {
-
         if (Account::class !== $resourceClass || $this->security->isGranted('ROLE_SUPER_ADMIN') || null === $user = $this->security->getUser()) {
             return;
         }
@@ -43,8 +40,7 @@ final class CurrentUserExtension implements QueryCollectionExtensionInterface, Q
         // the goal is to only return the current user's account instead of all accounts
         $rootAlias = $queryBuilder->getRootAliases()[0];
         $queryBuilder->andWhere('u.account = :user_account');
-        $queryBuilder->innerJoin(User::class, 'u', Join::WITH,  sprintf('u.account = %s.id', $rootAlias));
+        $queryBuilder->innerJoin(User::class, 'u', Join::WITH, sprintf('u.account = %s.id', $rootAlias));
         $queryBuilder->setParameter('user_account', $user->getAccount());
-
     }
 }

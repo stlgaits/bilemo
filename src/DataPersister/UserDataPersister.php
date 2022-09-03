@@ -10,7 +10,6 @@ use Symfony\Component\Security\Core\Security;
 
 final class UserDataPersister implements DataPersisterInterface
 {
-
     private EntityManagerInterface $entityManager;
     private UserPasswordHasherInterface $userPasswordHasher;
     private DataPersisterInterface $dataPersister;

@@ -41,7 +41,7 @@ class Customer
     #[ORM\Column(type: 'integer')]
     private ?int $id;
 
-    #[ORM\Column(type: 'string', length: 255,  unique: true)]
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Groups(['customer:read', 'customer:write'])]
     #[Assert\NotBlank()]
     #[Assert\Email()]

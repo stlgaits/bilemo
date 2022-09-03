@@ -19,7 +19,6 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
  */
 class AccountTest extends CustomApiTestCase
 {
-
     use ReloadDatabaseTrait;
 
     /**
