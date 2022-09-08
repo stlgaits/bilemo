@@ -35,15 +35,12 @@ final class CurrentUserExtension implements QueryCollectionExtensionInterface, Q
     private function addWhere(QueryBuilder $queryBuilder, string $resourceClass): void
     {
 
-        if (Account::class !== $resourceClass || $this->security->isGranted('ROLE_SUPER_ADMIN') || null === $user = $this->security->getUser()) {
+        if (User::class !== $resourceClass || $this->security->isGranted('ROLE_SUPER_ADMIN') || null === $user = $this->security->getUser()) {
             return;
         }
-
-        //@TODO: this doesn't actually work; the request is probably wrong
-        // the goal is to only return the current user's account instead of all accounts
+        // the goal is to only return the current user's account users instead of all users
         $rootAlias = $queryBuilder->getRootAliases()[0];
-        $queryBuilder->andWhere('u.account = :user_account');
-        $queryBuilder->innerJoin(User::class, 'u', Join::WITH,  sprintf('u.account = %s.id', $rootAlias));
+        $queryBuilder->andWhere(sprintf('%s.account = :user_account', $rootAlias));
         $queryBuilder->setParameter('user_account', $user->getAccount());
 
     }
