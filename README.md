@@ -27,6 +27,10 @@ Each product belongs  to a Category (e.g. phone, tablet, accessory).
 
 An account is a BileMo customer - it is usually a company.
 
+### Customers
+
+A customer is a physical person, someone who's purchased a product. Each Customer belongs to an Account.
+
 ### Users
 
 A user is someone who has been granted access to the BileMo API. Each user belongs to an Account. A user can 
