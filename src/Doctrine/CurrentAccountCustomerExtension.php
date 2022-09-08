@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Doctrine;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
@@ -10,10 +9,8 @@ use App\Entity\Customer;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Security;
 
-
 final class CurrentAccountCustomerExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
 {
-
     private Security $security;
 
     public function __construct(Security $security)
@@ -33,7 +30,6 @@ final class CurrentAccountCustomerExtension implements QueryCollectionExtensionI
 
     private function addWhere(QueryBuilder $queryBuilder, string $resourceClass): void
     {
-
         if (Customer::class !== $resourceClass || $this->security->isGranted('ROLE_SUPER_ADMIN') || null === $user = $this->security->getUser()) {
             return;
         }
@@ -42,6 +38,5 @@ final class CurrentAccountCustomerExtension implements QueryCollectionExtensionI
         $rootAlias = $queryBuilder->getRootAliases()[0];
         $queryBuilder->andWhere(sprintf('%s.account = :current_account', $rootAlias));
         $queryBuilder->setParameter('user_account', $user->getAccount());
-
     }
 }

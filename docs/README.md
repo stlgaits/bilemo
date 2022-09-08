@@ -8,10 +8,9 @@
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/EstelleMyddleware/bilemo)](https://github.com/EstelleMyddleware/bilemo)
 [![Estelle's GitHub stats](https://github-readme-stats.vercel.app/api?username=EstelleMyddleware)](https://github.com/EstelleMyddleware/github-readme-stats)
 
+API for B2B mobile phones catalog. Full documentation for the API is available [here](https://estellemyddleware.github.io/bilemo/)
 
- API for B2B mobile phones catalog. Full documentation for the API is available [here](https://estellemyddleware.github.io/bilemo/)
-
-## API Resources
+## API Resources definition
 
 For the sake of clarity, you will find below the list & description of available API resources.
 
@@ -34,7 +33,6 @@ A customer is a physical person, someone who's purchased a product. Each Custome
 ### Users
 
 A user is someone who has been granted access to the BileMo API. Each user belongs to an Account. A user can 
-
 
 
 ## Downloading the project
@@ -101,6 +99,40 @@ The ```symfony serve``` command will start a PHP webserver.
 You can now go to your localhost URL : <http://127.0.0.1:8000> where the blog should be displayed.
 
 >NB: alternatively, if you do not wish to use the Symfony webserver, you can always use WAMP / Laragon / MAMP or a similar webserver suite.
+
+## Start using the API
+
+### Authenticate
+
+#### Get your JWT token
+
+To be able to make requests to the BileMo API, you will first need to authenticate yourself via JWT.
+To do so, you need to have your BileMO API user credentials ready with you (if unsure where to find them, please ask your administrator).
+
+| Method | URL                                    | Body                                                                          | Headers                          | Response body     |
+|--------|----------------------------------------|-------------------------------------------------------------------------------|----------------------------------|-------------------|
+| POST   | https://localhost:8000/api/login_check | ```{ "username": "jane.doe@email.com", "password": "yourprivatepassword"} ``` | 'Content-Type: application/json' | Response body     |
+
+
+![Postman - POST login_check credentials request to get JWT](/images/postman_login_check.png)
+
+If all went well, you should get a JSON response containing a **token** entry. You need to keep this token.
+You will now need to send it as a header with each of your API requests in order to authenticate yourself.
+
+#### Send your JWT token with each request
+
+For each API request you make, you must send your JWT token too. Here is an example :
+
+[//]: # ()
+[//]: # (| Method | URL                                    | Body                                                                          | Headers                          | Response body     |)
+
+[//]: # (|--------|----------------------------------------|-------------------------------------------------------------------------------|----------------------------------|-------------------|)
+
+[//]: # (| POST   | https://localhost:8000/api/login_check | ```{ "username": "jane.doe@email.com", "password": "yourprivatepassword"} ``` | 'Content-Type: application/json' | Response body     |)
+
+[//]: # ()
+[//]: # ()
+
 
 
 ## Credits

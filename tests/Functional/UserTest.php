@@ -125,7 +125,7 @@ class UserTest extends CustomApiTestCase
         $user = $this->createUser("admin@escadenca.fr", "thisisatestpassword", $account);
         $user->setRoles(['ROLE_ADMIN']);
         $jwtToken = $this->getJWTToken($user, $client, "thisisatestpassword");
-        $userWithSameAccount = $this->createUser("user1@escadenca.fr","thisisatestpassword", $account);
+        $userWithSameAccount = $this->createUser("user1@escadenca.fr", "thisisatestpassword", $account);
         $usersWithDifferentAccount = [];
         for ($i = 0 ; $i < 5 ; $i++) {
             $newUser = $this->createUser("user$i@cdiscount.fr", "thisisatestpwd", $account2);
@@ -432,7 +432,8 @@ class UserTest extends CustomApiTestCase
      * @throws ClientExceptionInterface
      * @throws Exception
      */
-    public function testUserCanDeleteThemselves() {
+    public function testUserCanDeleteThemselves()
+    {
         $client = self::createClient();
         $container = static::getContainer();
         $loggedInUserJWTToken = $this->createUserAndLogIn(

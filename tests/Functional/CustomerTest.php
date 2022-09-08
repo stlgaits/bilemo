@@ -24,42 +24,34 @@ class CustomerTest extends CustomApiTestCase
 
     public function testUserCanListCustomersFromOwnAccount()
     {
-
     }
 
     public function testUserCannotReadCustomersFromOtherAccounts()
     {
-
     }
 
     public function testUserCanAddCustomersOnOwnAccount()
     {
-
     }
 
     public function testUserCannotAddUsersOnOtherAccounts()
     {
-
     }
 
     public function testUserCannotCreateCustomerWithMissingData()
     {
-
     }
 
     public function testUserCannotCreateCustomersWithoutJWT()
     {
-
     }
 
     public function testUserCanDeleteCustomerOnOwnAccount()
     {
-
     }
 
     public function testUserCannotDeleteCustomerOnDifferentAccount()
     {
-
     }
 
     /**

@@ -17,7 +17,8 @@ class UserVoter extends Voter
 
     private Security $security;
 
-    public function __construct(Security $security) {
+    public function __construct(Security $security)
+    {
         $this->security = $security;
     }
 
@@ -46,7 +47,7 @@ class UserVoter extends Voter
 
         switch ($attribute) {
             case self::VIEW:
-                if($subject->getAccount() === $user->getAccount()) {
+                if ($subject->getAccount() === $user->getAccount()) {
                     return true;
                 }
                 if ($this->security->isGranted('ROLE_ADMIN')) {
@@ -55,7 +56,7 @@ class UserVoter extends Voter
                 return false;
                 break;
             case self::CREATE:
-                if($subject->getAccount() === $user->getAccount()) {
+                if ($subject->getAccount() === $user->getAccount()) {
                     return true;
                 }
 

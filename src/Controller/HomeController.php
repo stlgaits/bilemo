@@ -6,7 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
-
 class HomeController extends AbstractController
 {
     /**
@@ -19,9 +18,3 @@ class HomeController extends AbstractController
         ]);
     }
 }
-
-
-
-
-
-
