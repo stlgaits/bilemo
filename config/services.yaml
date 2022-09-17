@@ -23,6 +23,11 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+
+    App\OpenApi\JwtDecorator:
+        decorates: 'api_platform.openapi.factory'
+        arguments: [ '@.inner' ]
+
 #    App\DataPersister\UserDataPersister:
 #        bind:
 #            $dataPersister: '@api_platform.doctrine.orm.data_persister'
