@@ -14,8 +14,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     collectionOperations: [
         "get" => [
-            'security' => 'is_granted("ROLE_ADMIN") or object.getAccount() == user.getAccount()',
-            'security_message' => 'Sorry, you can only access Customers linked to your own Account.',
+           // 'security' => 'is_granted("ROLE_ADMIN") or object.getAccount() == user.getAccount()',
+            'security' => 'is_granted("VIEW_CUSTOMER", object)',
+            'security_message' => 'So sorry, you can only access Customers linked to your own Account.',
         ],
         "post"
     ],
