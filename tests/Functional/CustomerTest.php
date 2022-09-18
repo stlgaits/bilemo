@@ -46,12 +46,38 @@ class CustomerTest extends CustomApiTestCase
     {
     }
 
+    /**
+     * @throws Exception
+     * @throws TransportExceptionInterface
+     */
     public function testUserCanDeleteCustomerOnOwnAccount()
     {
+        $client = self::createClient();
+        $container = static::getContainer();
+        $account = $this->createAccount('marie.dupont@fnac.com');
+        $user = $this->createUser('vincent.rock@gmail.com', 'camomille', $account);
+        $customer = $this->createCustomer(
+            'Elodie',
+            'Lacour',
+            'elodie.lacour@gmail.com',
+            '06 02 04 04 03',
+            $account
+        );
+        $token = $this->getJWTToken($user, $client,'camomille');
+        $response = $client->request('DELETE', '/api/customers/'.$customer->getId(), [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer '.$token
+            ]
+        ]);
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseStatusCodeSame(204);
+
     }
 
     public function testUserCannotDeleteCustomerOnDifferentAccount()
     {
+
     }
 
     /**
@@ -64,7 +90,13 @@ class CustomerTest extends CustomApiTestCase
         $container = static::getContainer();
         $account = $this->createAccount('charles.laborde@fnac.com');
         $user = $this->createUser('louise.vandenbeck@gmail.com', 'banana', $account);
-        $customer = $this->createCustomer();
+        $customer = $this->createCustomer(
+            'Kévin',
+            'Leblanc',
+            'kevin.leblanc@gmail.com',
+            '07 06 05 04 03',
+            $account
+        );
         $response = $client->request('DELETE', '/api/customers/'.$customer->getId(), [
             'headers' => [
                 'Content-Type' => 'application/json',

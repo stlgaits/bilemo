@@ -5,6 +5,7 @@ namespace App\Test;
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\Client;
 use App\Entity\Account;
+use App\Entity\Customer;
 use App\Entity\User;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
@@ -54,6 +55,25 @@ class CustomApiTestCase extends ApiTestCase
         return $account;
     }
 
+    /**
+     * @throws Exception
+     */
+    public function createCustomer(string $firstName, string $lastName, string $email, string $phoneNumber, Account $account): Customer
+    {
+        $em = $this->getEntityManager();
+        $customer = new Customer();
+        $customer->setFirstName($firstName);
+        $customer->setLastName($lastName);
+        $customer->setEmail($email);
+        $customer->setPhoneNumber($phoneNumber);
+        $customer->setAccount($account);
+        $customer->setCreatedAt(new DateTimeImmutable());
+        $customer->setUpdatedAt(new DateTimeImmutable());
+
+        $em->persist($customer);
+        $em->flush();
+        return $customer;
+    }
     /**
      * @coversNothing
      * @throws TransportExceptionInterface

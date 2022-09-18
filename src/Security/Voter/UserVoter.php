@@ -46,6 +46,7 @@ class UserVoter extends Voter
         /** @var User $subject */
 
         switch ($attribute) {
+            case self::CREATE:
             case self::VIEW:
                 if ($subject->getAccount() === $user->getAccount()) {
                     return true;
@@ -54,17 +55,6 @@ class UserVoter extends Voter
                     return true;
                 }
                 return false;
-                break;
-            case self::CREATE:
-                if ($subject->getAccount() === $user->getAccount()) {
-                    return true;
-                }
-
-                if ($this->security->isGranted('ROLE_ADMIN')) {
-                    return true;
-                }
-                return false;
-                break;
             case self::DELETE:
                 if ($subject === $user) {
                     return true;
@@ -73,7 +63,6 @@ class UserVoter extends Voter
                     return true;
                 }
                 return false;
-                break;
         }
 
         throw new Exception(sprintf('Unhandled attribute "%s"', $attribute));
