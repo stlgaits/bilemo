@@ -36,7 +36,7 @@ final class CurrentAccountCustomerExtension implements QueryCollectionExtensionI
 
         // only return Customers from current user's Account
         $rootAlias = $queryBuilder->getRootAliases()[0];
-        $queryBuilder->andWhere(sprintf('%s.account = :current_account', $rootAlias));
+        $queryBuilder->andWhere(sprintf('%s.account = :user_account', $rootAlias));
         $queryBuilder->setParameter('user_account', $user->getAccount());
     }
 }

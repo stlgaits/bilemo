@@ -6,7 +6,11 @@ api_platform:
     formats:
         jsonld: [ 'application/ld+json' ]
         json: [ 'application/json' ]
-#    swagger:
+    swagger:
+        api_keys:
+            JWT:
+                name: Authorization
+                type: header
 #        versions: [3]
     enable_swagger_ui: true
     enable_re_doc: true
