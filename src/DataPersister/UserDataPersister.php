@@ -33,7 +33,7 @@ final class UserDataPersister implements ContextAwareDataPersisterInterface
      * @inheritDoc
      * @param User $data
      */
-    public function persist($data, $context = [])
+    public function persist($data, $context = []): void
     {
         // this only applies in the context of API requests, when persisting an Entity manually,
         // the traditional method prevails (setting $password to a hashed pwd manually)
@@ -47,13 +47,12 @@ final class UserDataPersister implements ContextAwareDataPersisterInterface
         $data->setAccount($user->getAccount());
         $this->entityManager->persist($data);
         $this->entityManager->flush();
-        return $data;
     }
 
     /**
      * @inheritDoc
      */
-    public function remove($data, array $context = [])
+    public function remove($data, array $context = []): void
     {
         $this->entityManager->remove($data);
         $this->entityManager->flush();
