@@ -36,6 +36,7 @@ final class CustomerDataPersister implements ContextAwareDataPersisterInterface
         $data->setAccount($user->getAccount());
         $this->entityManager->persist($data);
         $this->entityManager->flush();
+        return $data;
     }
 
     /**
@@ -44,6 +45,7 @@ final class CustomerDataPersister implements ContextAwareDataPersisterInterface
     public function remove($data, array $context = [])
     {
         $this->entityManager->remove($data);
+        $this->entityManager->flush();
     }
 }
 

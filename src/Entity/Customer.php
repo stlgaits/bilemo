@@ -13,19 +13,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: CustomerRepository::class)]
 #[ApiResource(
     collectionOperations: [
-        "get" => [
-            "security" => "is_granted('VIEW_CUSTOMER', object)",
-            "security_message" => "So sorry, you can only access Customers linked to your own Account.",
-        ],
+        "get",
         "post"
     ],
     itemOperations: [
-        "get" => [
-            'security' => 'is_granted("ROLE_ADMIN") or object.getAccount() == user.getAccount()',
-            'security_message' => 'Sorry, you can only access Customers linked to your own Account.',
-        ],
-        "delete" => ["security" => "is_granted('ROLE_ADMIN') or object.getAccount() == user.getAccount()"],
-    ],
+        "get",
+        "delete" => [
+            "security" => "is_granted('DELETE_CUSTOMER', object)",
+            'security_message' => 'Sorry, you can only delete Customers linked to your own Account.',
+            ],
+     ],
     attributes: [
         'pagination_items_per_page' => 10,
         'formats' => ['json', 'jsonld'],
@@ -39,6 +36,7 @@ class Customer
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['customer:read'])]
     private ?int $id;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]

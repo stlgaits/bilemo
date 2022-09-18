@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class CustomerVoter extends Voter
 {
-    public const VIEW_CUSTOMER = 'VIEW_CUSTOMER';
+    public const DELETE_CUSTOMER = 'DELETE_CUSTOMER';
 
     private Security $security;
 
@@ -22,7 +22,7 @@ class CustomerVoter extends Voter
 
     protected function supports(string $attribute, $subject): bool
     {
-        return $attribute == self::VIEW_CUSTOMER
+        return $attribute == self::DELETE_CUSTOMER
             && $subject instanceof Customer;
     }
 
@@ -39,7 +39,7 @@ class CustomerVoter extends Voter
 
         /** @var Customer $subject */
 
-        if ($attribute == self::VIEW_CUSTOMER) {
+        if ($attribute == self::DELETE_CUSTOMER) {
             if ($subject->getAccount() === $user->getAccount()) {
                 return true;
             }
