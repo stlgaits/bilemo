@@ -29,13 +29,15 @@ class CustomerVoter extends Voter
     /**
      * @throws Exception
      */
-    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
+    protected function voteOnAttribute(string $attribute,  $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
         // if the user is anonymous, do not grant access
         if (!$user instanceof UserInterface) {
             return false;
         }
+
+        /** @var Customer $subject */
 
         if ($attribute == self::VIEW_CUSTOMER) {
             if ($subject->getAccount() === $user->getAccount()) {

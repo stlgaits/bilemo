@@ -2,29 +2,26 @@
 
 namespace App\DataPersister;
 
-use ApiPlatform\Core\DataPersister\DataPersisterInterface;
+use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 use App\Entity\Customer;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Security;
 
-final class CustomerDataPersister implements DataPersisterInterface
+final class CustomerDataPersister implements ContextAwareDataPersisterInterface
 {
     private EntityManagerInterface $entityManager;
-    private DataPersisterInterface $dataPersister;
     private Security $security;
 
-    public function __construct(EntityManagerInterface $entityManager, DataPersisterInterface $dataPersister, Security $security)
+    public function __construct(EntityManagerInterface $entityManager, Security $security)
     {
         $this->entityManager = $entityManager;
-        $this->dataPersister = $dataPersister;
         $this->security = $security;
     }
 
     /**
      * @inheritDoc
      */
-    public function supports($data): bool
+    public function supports($data, array $context = []): bool
     {
         return $data instanceof Customer;
     }
@@ -33,7 +30,7 @@ final class CustomerDataPersister implements DataPersisterInterface
      * @inheritDoc
      * @param Customer $data
      */
-    public function persist($data)
+    public function persist($data, array $context = [])
     {
         $user = $this->security->getUser();
         $data->setAccount($user->getAccount());
@@ -46,7 +43,7 @@ final class CustomerDataPersister implements DataPersisterInterface
      */
     public function remove($data, array $context = [])
     {
-        $this->dataPersister->remove($data);
+        $this->entityManager->remove($data);
     }
 }
 

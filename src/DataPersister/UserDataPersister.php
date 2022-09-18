@@ -2,31 +2,29 @@
 
 namespace App\DataPersister;
 
-use ApiPlatform\Core\DataPersister\DataPersisterInterface;
+use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Security;
 
-final class UserDataPersister implements DataPersisterInterface
+final class UserDataPersister implements ContextAwareDataPersisterInterface
 {
     private EntityManagerInterface $entityManager;
     private UserPasswordHasherInterface $userPasswordHasher;
-    private DataPersisterInterface $dataPersister;
     private Security $security;
 
-    public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher, DataPersisterInterface $dataPersister, Security $security)
+    public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher, Security $security)
     {
         $this->entityManager = $entityManager;
         $this->userPasswordHasher = $userPasswordHasher;
-        $this->dataPersister = $dataPersister;
         $this->security = $security;
     }
 
     /**
      * @inheritDoc
      */
-    public function supports($data): bool
+    public function supports($data, $context = []): bool
     {
         return $data instanceof User;
     }
@@ -35,7 +33,7 @@ final class UserDataPersister implements DataPersisterInterface
      * @inheritDoc
      * @param User $data
      */
-    public function persist($data)
+    public function persist($data, $context = [])
     {
         // this only applies in the context of API requests, when persisting an Entity manually,
         // the traditional method prevails (setting $password to a hashed pwd manually)
@@ -56,6 +54,6 @@ final class UserDataPersister implements DataPersisterInterface
      */
     public function remove($data, array $context = [])
     {
-        $this->dataPersister->remove($data);
+        $this->entityManager->remove($data);
     }
 }
