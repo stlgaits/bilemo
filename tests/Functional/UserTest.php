@@ -29,7 +29,7 @@ class UserTest extends CustomApiTestCase
      * @throws ClientExceptionInterface
      * @throws Exception
      */
-    public function testCreateUserViaPostRequestWithJWTAuth()
+    public function testCreateUserViaPostRequestWithJWTAuth(): void
     {
         $client = self::createClient();
         $container = static::getContainer();
@@ -264,7 +264,7 @@ class UserTest extends CustomApiTestCase
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function testCannotCreateUserViaPostRequestWithoutJWT()
+    public function testCannotCreateUserViaPostRequestWithoutJWT(): void
     {
         $container = static::getContainer();
         $user = new User();
@@ -294,7 +294,7 @@ class UserTest extends CustomApiTestCase
      * @throws ClientExceptionInterface
      * @throws Exception
      */
-    public function testCannotCreateUserWithInvalidJSONInput()
+    public function testCannotCreateUserWithInvalidJSONInput(): void
     {
         $client = self::createClient();
         $container = static::getContainer();
@@ -343,7 +343,7 @@ class UserTest extends CustomApiTestCase
      * @throws Exception
      * @TODO still not passing yet
      */
-    public function testCannotCreateUserOnDifferentAccountThanOwn()
+    public function testCannotCreateUserOnDifferentAccountThanOwn(): void
     {
         $client = self::createClient();
         $container = static::getContainer();
@@ -390,7 +390,7 @@ class UserTest extends CustomApiTestCase
      * @throws ClientExceptionInterface
      * @throws Exception
      */
-    public function testCannotCreateUserWithMissingData()
+    public function testCannotCreateUserWithMissingData(): void
     {
         $client = self::createClient();
         $container = static::getContainer();
@@ -432,7 +432,7 @@ class UserTest extends CustomApiTestCase
      * @throws ClientExceptionInterface
      * @throws Exception
      */
-    public function testUserCanDeleteThemselves()
+    public function testUserCanDeleteThemselves(): void
     {
         $client = self::createClient();
         $container = static::getContainer();
@@ -460,7 +460,7 @@ class UserTest extends CustomApiTestCase
      * @throws ClientExceptionInterface
      * @throws Exception
      */
-    public function testCannotDeleteUserWithoutJWTHeader()
+    public function testCannotDeleteUserWithoutJWTHeader(): void
     {
         $client = self::createClient();
         $container = static::getContainer();
@@ -483,7 +483,7 @@ class UserTest extends CustomApiTestCase
      * @throws TransportExceptionInterface
      * @throws Exception
      */
-    public function testCannotDeleteUserWithoutAuth()
+    public function testCannotDeleteUserWithoutAuth(): void
     {
         $client = self::createClient();
         $container = static::getContainer();
@@ -504,7 +504,7 @@ class UserTest extends CustomApiTestCase
      * @throws ClientExceptionInterface
      * @throws Exception
      */
-    public function testUserCannotDeleteAnotherUser()
+    public function testUserCannotDeleteAnotherUser(): void
     {
         $client = self::createClient();
         $container = static::getContainer();

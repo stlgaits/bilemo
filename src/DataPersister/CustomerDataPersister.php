@@ -30,22 +30,20 @@ final class CustomerDataPersister implements ContextAwareDataPersisterInterface
      * @inheritDoc
      * @param Customer $data
      */
-    public function persist($data, array $context = [])
+    public function persist($data, array $context = []): void
     {
         $user = $this->security->getUser();
         $data->setAccount($user->getAccount());
         $this->entityManager->persist($data);
         $this->entityManager->flush();
-        return $data;
     }
 
     /**
      * @inheritDoc
      */
-    public function remove($data, array $context = [])
+    public function remove($data, array $context = []): void
     {
         $this->entityManager->remove($data);
         $this->entityManager->flush();
     }
 }
-

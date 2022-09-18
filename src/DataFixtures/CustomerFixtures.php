@@ -11,11 +11,9 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
 use Faker\Factory;
-use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
 class CustomerFixtures extends Fixture implements DependentFixtureInterface
 {
-    private ContainerBagInterface $params;
     private AccountRepository $accountRepository;
     /**
      * @var Account[]
