@@ -109,9 +109,9 @@ You can now go to your localhost URL : <http://127.0.0.1:8000> where the blog sh
 To be able to make requests to the BileMo API, you will first need to authenticate yourself via JWT.
 To do so, you need to have your BileMO API user credentials ready with you (if unsure where to find them, please ask your administrator).
 
-| Method | URL                                    | Body                                                                          | Headers                          | Response body     |
-|--------|----------------------------------------|-------------------------------------------------------------------------------|----------------------------------|-------------------|
-| POST   | https://localhost:8000/api/login_check | ```{ "username": "jane.doe@email.com", "password": "yourprivatepassword"} ``` | 'Content-Type: application/json' | Response body     |
+| Method | URL                                    | Body                                                                          | Headers                          | Response body                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+|--------|----------------------------------------|-------------------------------------------------------------------------------|----------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| POST   | https://localhost:8000/api/login_check | ```{ "username": "jane.doe@email.com", "password": "yourprivatepassword"} ``` | 'Content-Type: application/json' | ``` {"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjI2NTY0MTgsImV4cCI6MTY2MjY2MDAxOCwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiZXN0ZWxsZS5nYWl0c0BnbWFpbC5jb20ifQ.MOel3xEsnEtnKtnwEg5jcoCw3MVE3DNXt-DmFhz_CZPwouoIExc-FxXHLkJwvdlQwMl0slOYgmk95OBSqNkCb7j35qGiwgV-0k9mmKc1HfCXbHMcWqZg6kElcp9uXdsMHjYdwnJfX2ZYC37aYlgZz-Frkb3DkyE0Bw-tdr8O1rXUkzA2H1ueOYqUZFL_M-rXplNOMNXcOoL5HVexud_6cVbZeXOPYF0IR19vnZ_0AFxpm2y8JssTaQ6NFYTct1ojCNEfRevdAIBseClDd8O8uXPtLS60nUDUSLLpSQuOZOkD1Tn1JJm1ORoCqz3zFqnH5p0a7te7TxXX6fWUM22Y7A", "refresh_token": "c840e1eded75fb2be4b66d33a92cede0f1ea6a8787460718db4dbb454c4950cb495858ae96539856e0e16b56d66b4ccd0d3703f815a42d00dffa35e3dbe85769"} ``` |
 
 
 ![Postman - POST login_check credentials request to get JWT](/images/postman_login_check.png)
@@ -121,18 +121,22 @@ You will now need to send it as a header with each of your API requests in order
 
 #### Send your JWT token with each request
 
-For each API request you make, you must send your JWT token too. Here is an example :
+For each API request you make, you must send your JWT token too. 
 
-[//]: # ()
-[//]: # (| Method | URL                                    | Body                                                                          | Headers                          | Response body     |)
+Here is an example using curl : 
 
-[//]: # (|--------|----------------------------------------|-------------------------------------------------------------------------------|----------------------------------|-------------------|)
+```curl
+curl --location --request GET 'https://localhost:8000/api/products' \
+--header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjI2NTY0MTgsImV4cCI6MTY2MjY2MDAxOCwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiZXN0ZWxsZS5nYWl0c0BnbWFpbC5jb20ifQ.MOel3xEsnEtnKtnwEg5jcoCw3MVE3DNXt-DmFhz_CZPwouoIExc-FxXHLkJwvdlQwMl0slOYgmk95OBSqNkCb7j35qGiwgV-0k9mmKc1HfCXbHMcWqZg6kElcp9uXdsMHjYdwnJfX2ZYC37te7TxXX6fWUM22Y7A'
 
-[//]: # (| POST   | https://localhost:8000/api/login_check | ```{ "username": "jane.doe@email.com", "password": "yourprivatepassword"} ``` | 'Content-Type: application/json' | Response body     |)
+```
 
-[//]: # ()
-[//]: # ()
+| Method | URL                                  | Headers                                                                                                                                                                                                                                                                                                                                                       | Response body                                                                                                                                                                                                                                                                                                                                                                                                |
+|--------|--------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| GET    | https://localhost:8000/api/products  | 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjI2NTY0MTgsImV4cCI6MTY2MjY2MDAxOCwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiZXN0ZWxsZS5nYWl0c0BnbWFpbC5jb20ifQ.MOel3xEsnEtnKtnwEg5jcoCw3MVE3DNXt-DmFhz_CZPwouoIExc-FxXHLkJwvdlQwMl0slOYgmk95OBSqNkCb7j35qGiwgV-0k9mmKc1HfCXbHMcWqZg6kElcp9uXdsMHjYdwnJfX2ZYC37te7TxXX6fWUM22Y7A'  | ```[{"id": 377,"name": "Sed","createdAt": "2022-07-06T22:46:31+00:00","updatedAt": "2022-07-07T22:46:31+00:00","description": "Neque deleniti culpa sequi itaque eos magnam esse. Ut deserunt incidunt expedita est quia tempora veniam voluptatem. Id quia vitae nihil fuga.","category": "/api/categories/78","brand": "Masson","sku": "2120490525444","available": false,"price": 330.8}, ..... ]```      |
 
+
+![GET Products](images/products.png)
 
 
 ## Credits
