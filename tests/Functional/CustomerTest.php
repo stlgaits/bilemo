@@ -63,7 +63,7 @@ class CustomerTest extends CustomApiTestCase
             '06 02 04 04 03',
             $account
         );
-        $token = $this->getJWTToken($user, $client,'camomille');
+        $token = $this->getJWTToken($user, $client, 'camomille');
         $response = $client->request('DELETE', '/api/customers/'.$customer->getId(), [
             'headers' => [
                 'Content-Type' => 'application/json',
@@ -72,12 +72,10 @@ class CustomerTest extends CustomApiTestCase
         ]);
         $this->assertResponseIsSuccessful();
         $this->assertResponseStatusCodeSame(204);
-
     }
 
     public function testUserCannotDeleteCustomerOnDifferentAccount()
     {
-
     }
 
     /**

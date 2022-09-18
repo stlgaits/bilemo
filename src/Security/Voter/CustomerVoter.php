@@ -29,7 +29,7 @@ class CustomerVoter extends Voter
     /**
      * @throws Exception
      */
-    protected function voteOnAttribute(string $attribute,  $subject, TokenInterface $token): bool
+    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
         // if the user is anonymous, do not grant access

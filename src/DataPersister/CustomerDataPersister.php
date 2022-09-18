@@ -48,4 +48,3 @@ final class CustomerDataPersister implements ContextAwareDataPersisterInterface
         $this->entityManager->flush();
     }
 }
-
