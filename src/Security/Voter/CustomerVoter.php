@@ -20,7 +20,7 @@ class CustomerVoter extends Voter
         $this->security = $security;
     }
 
-    protected function supports(string $attribute, $subject): bool
+    protected function supports(string $attribute, mixed $subject): bool
     {
         return $attribute == self::DELETE_CUSTOMER
             && $subject instanceof Customer;
@@ -29,7 +29,7 @@ class CustomerVoter extends Voter
     /**
      * @throws Exception
      */
-    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
+    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
         // if the user is anonymous, do not grant access

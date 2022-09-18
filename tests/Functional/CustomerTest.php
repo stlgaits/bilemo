@@ -22,27 +22,27 @@ class CustomerTest extends CustomApiTestCase
         $this->assertResponseStatusCodeSame(401);
     }
 
-    public function testUserCanListCustomersFromOwnAccount()
+    public function testUserCanListCustomersFromOwnAccount(): void
     {
     }
 
-    public function testUserCannotReadCustomersFromOtherAccounts()
+    public function testUserCannotReadCustomersFromOtherAccounts(): void
     {
     }
 
-    public function testUserCanAddCustomersOnOwnAccount()
+    public function testUserCanAddCustomersOnOwnAccount(): void
     {
     }
 
-    public function testUserCannotAddUsersOnOtherAccounts()
+    public function testUserCannotAddUsersOnOtherAccounts(): void
     {
     }
 
-    public function testUserCannotCreateCustomerWithMissingData()
+    public function testUserCannotCreateCustomerWithMissingData(): void
     {
     }
 
-    public function testUserCannotCreateCustomersWithoutJWT()
+    public function testUserCannotCreateCustomersWithoutJWT(): void
     {
     }
 
@@ -50,7 +50,7 @@ class CustomerTest extends CustomApiTestCase
      * @throws Exception
      * @throws TransportExceptionInterface
      */
-    public function testUserCanDeleteCustomerOnOwnAccount()
+    public function testUserCanDeleteCustomerOnOwnAccount(): void
     {
         $client = self::createClient();
         $container = static::getContainer();
@@ -74,7 +74,7 @@ class CustomerTest extends CustomApiTestCase
         $this->assertResponseStatusCodeSame(204);
     }
 
-    public function testUserCannotDeleteCustomerOnDifferentAccount()
+    public function testUserCannotDeleteCustomerOnDifferentAccount(): void
     {
     }
 
@@ -82,7 +82,7 @@ class CustomerTest extends CustomApiTestCase
      * @throws TransportExceptionInterface
      * @throws Exception
      */
-    public function testUserCannotDeleteCustomerWithoutAuth()
+    public function testUserCannotDeleteCustomerWithoutAuth(): void
     {
         $client = self::createClient();
         $container = static::getContainer();
