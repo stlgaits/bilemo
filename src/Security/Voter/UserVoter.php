@@ -12,7 +12,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class UserVoter extends Voter
 {
     public const VIEW = 'VIEW';
-    public const CREATE = 'CREATE';
     public const DELETE = 'DELETE';
 
     private Security $security;
@@ -26,7 +25,6 @@ class UserVoter extends Voter
     {
         return in_array($attribute, [
             self::VIEW,
-            self::CREATE,
             self::DELETE
             ])
             && $subject instanceof User;
@@ -46,7 +44,6 @@ class UserVoter extends Voter
         /** @var User $subject */
 
         switch ($attribute) {
-            case self::CREATE:
             case self::VIEW:
                 if ($subject->getAccount() === $user->getAccount()) {
                     return true;
