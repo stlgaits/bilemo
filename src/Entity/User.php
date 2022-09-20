@@ -66,8 +66,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne(targetEntity: Account::class, cascade: ['persist'], inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\Valid()]
-    #[Assert\NotBlank()]
     #[Groups(['user:read'])]
     private ?Account $account;
 
