@@ -21,12 +21,10 @@ use Symfony\Component\Validator\Constraints as Assert;
     collectionOperations: [
         // need to find a way to only return users linked to current user's own account
         "get",
-        "post" => [
-            "security" => "is_granted('CREATE', object)"
-        ]
+        "post"
     ],
     itemOperations: [
-        "get" =>  ["security" => "is_granted('VIEW', object)"],
+        "get",
         "delete" => ["security" => "is_granted('DELETE', object)"],
     ],
     attributes: [
@@ -59,8 +57,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private array $roles = [];
 
     #[ORM\Column(type: 'string')]
-    // #[Groups(['user:write'])]
-    // #[Assert\NotBlank()]
     private string $password;
 
     #[Groups(['user:write'])]
@@ -70,9 +66,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne(targetEntity: Account::class, cascade: ['persist'], inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\Valid()]
-    #[Assert\NotBlank()]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(['user:read'])]
     private ?Account $account;
 
     #[Assert\NotBlank()]
