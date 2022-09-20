@@ -85,7 +85,7 @@ class CustomerTest extends CustomApiTestCase
         $userAccount = $this->createAccount('charles.laborde@fnac.com');
         $customerAccount = $this->createAccount('remi.lafont@cdiscount.com');
         $user = $this->createUser('louise.vandenbeck@gmail.com', 'banana', $userAccount);
-        $token = $this->getJWTToken($user, $client,'banana');
+        $token = $this->getJWTToken($user, $client, 'banana');
         $customer = $this->createCustomer(
             'Carlie',
             'Jensen',
