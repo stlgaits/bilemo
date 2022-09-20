@@ -99,8 +99,9 @@ class CustomerTest extends CustomApiTestCase
                 'Authorization' => 'Bearer '. $token
             ]
         ]);
-        $this->assertResponseIsSuccessful();
-        $this->assertResponseStatusCodeSame(401);
+
+        // Resource should be entirely unacessible for the User, hence resulting in a 404
+        $this->assertResponseStatusCodeSame(404);
     }
 
     /**
