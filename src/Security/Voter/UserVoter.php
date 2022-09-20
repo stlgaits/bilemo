@@ -11,7 +11,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserVoter extends Voter
 {
-    public const VIEW = 'VIEW';
     public const DELETE = 'DELETE';
 
     private Security $security;
@@ -23,10 +22,7 @@ class UserVoter extends Voter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return in_array($attribute, [
-            self::VIEW,
-            self::DELETE
-            ])
+        return $attribute == self::DELETE
             && $subject instanceof User;
     }
 
@@ -43,23 +39,14 @@ class UserVoter extends Voter
 
         /** @var User $subject */
 
-        switch ($attribute) {
-            case self::VIEW:
-                if ($subject->getAccount() === $user->getAccount()) {
-                    return true;
-                }
-                if ($this->security->isGranted('ROLE_ADMIN')) {
-                    return true;
-                }
-                return false;
-            case self::DELETE:
-                if ($subject === $user) {
-                    return true;
-                }
-                if ($this->security->isGranted('ROLE_ADMIN')) {
-                    return true;
-                }
-                return false;
+        if ($attribute == self::DELETE) {
+            if ($subject === $user) {
+                return true;
+            }
+            if ($this->security->isGranted('ROLE_ADMIN')) {
+                return true;
+            }
+            return false;
         }
 
         throw new Exception(sprintf('Unhandled attribute "%s"', $attribute));
