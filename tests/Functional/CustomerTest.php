@@ -74,8 +74,33 @@ class CustomerTest extends CustomApiTestCase
         $this->assertResponseStatusCodeSame(204);
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws Exception
+     */
     public function testUserCannotDeleteCustomerOnDifferentAccount(): void
     {
+        $client = self::createClient();
+        $container = static::getContainer();
+        $userAccount = $this->createAccount('charles.laborde@fnac.com');
+        $customerAccount = $this->createAccount('remi.lafont@cdiscount.com');
+        $user = $this->createUser('louise.vandenbeck@gmail.com', 'banana', $userAccount);
+        $token = $this->getJWTToken($user, $client,'banana');
+        $customer = $this->createCustomer(
+            'Carlie',
+            'Jensen',
+            'carlie.jensen@gmail.com',
+            '07 07 15 04 03',
+            $customerAccount
+        );
+        $response = $client->request('DELETE', '/api/customers/'.$customer->getId(), [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer '. $token
+            ]
+        ]);
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseStatusCodeSame(401);
     }
 
     /**

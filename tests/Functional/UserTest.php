@@ -115,7 +115,6 @@ class UserTest extends CustomApiTestCase
      * @throws TransportExceptionInterface
      * @throws Exception
      * @throws DecodingExceptionInterface
-     * @TODO : this test currently fails as All Users are returned instead of only the Admin's account users
      */
     public function testAdminCanOnlyReadUsersFromSameAccount(): void
     {
