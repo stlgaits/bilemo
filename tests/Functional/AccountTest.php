@@ -70,15 +70,19 @@ class AccountTest extends CustomApiTestCase
             ]
         ]);
 
+        // /accounts endpoint should now be disabled entirely
+        $this->assertResponseStatusCodeSame(404);
+
+
         // Only the current user's account should be readable
-        $this->assertResponseStatusCodeSame(200);
-        $this->assertJsonContains(['primaryEmail' => 'contact@orange.com']);
-        $data = $client->getResponse()->toArray();
-        $this->assertArrayHasKey("industry", $data);
-        $this->assertArrayHasKey("description", $data);
-        $this->assertArrayHasKey("name", $data);
-        $this->assertArrayHasKey("users", $data);
-        $this->assertArrayHasKey("createdAt", $data);
+//        $this->assertResponseStatusCodeSame(200);
+//        $this->assertJsonContains(['primaryEmail' => 'contact@orange.com']);
+//        $data = $client->getResponse()->toArray();
+//        $this->assertArrayHasKey("industry", $data);
+//        $this->assertArrayHasKey("description", $data);
+//        $this->assertArrayHasKey("name", $data);
+//        $this->assertArrayHasKey("users", $data);
+//        $this->assertArrayHasKey("createdAt", $data);
     }
 
     /**
@@ -108,7 +112,7 @@ class AccountTest extends CustomApiTestCase
             ]
         ]);
 
-        // Only the current user's account should be readable
-        $this->assertResponseStatusCodeSame(403);
+        // Not account endpoint should be available
+        $this->assertResponseStatusCodeSame(404);
     }
 }
