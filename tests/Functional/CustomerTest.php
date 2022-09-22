@@ -24,11 +24,31 @@ class CustomerTest extends CustomApiTestCase
 
     public function testUserCanListCustomersFromOwnAccount(): void
     {
+        $client = self::createClient();
+        $account = $this->createAccount("contact@telefonika.fr");
+        $user = $this->createUser("admin@telefonika.fr", "testpwd", $account);
+        $jwtToken = $this->getJWTToken($user, $client, "testpwd");
+        // create some customers
+        for ($i = 0 ; $i < 5 ; $i++) {
+            $this->createCustomer("Test","Customer$i", "test$i@email.com", "0$i 00 00 00 00", $account);
+        }
+        $response = $client->request('GET', '/api/customers', [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer '.$jwtToken
+            ]
+        ]);
+        $data = $client->getResponse()->toArray();
+        $customersResponse = $data['hydra:member'];
+
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseStatusCodeSame(200);
+        $this->assertCount(5, $customersResponse);
     }
 
-    public function testUserCannotReadCustomersFromOtherAccounts(): void
-    {
-    }
+//    public function testUserCannotReadCustomersFromOtherAccounts(): void
+//    {
+//    }
 
     public function testUserCanAddCustomersOnOwnAccount(): void
     {
