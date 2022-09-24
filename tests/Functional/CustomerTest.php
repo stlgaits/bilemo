@@ -7,8 +7,15 @@ namespace App\Tests\Functional;
 use App\Test\CustomApiTestCase;
 use Exception;
 use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
+/**
+ * @covers \App\Entity\Customer
+ */
 class CustomerTest extends CustomApiTestCase
 {
     use ReloadDatabaseTrait;
@@ -22,6 +29,14 @@ class CustomerTest extends CustomApiTestCase
         $this->assertResponseStatusCodeSame(401);
     }
 
+    /**
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws Exception
+     */
     public function testUserCanListCustomersFromOwnAccount(): void
     {
         $client = self::createClient();
@@ -50,20 +65,85 @@ class CustomerTest extends CustomApiTestCase
 //    {
 //    }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws Exception
+     */
     public function testUserCanAddCustomersOnOwnAccount(): void
     {
+        $client = self::createClient();
+        $account = $this->createAccount("contact@cdiscount.fr");
+        $user = $this->createUser("admin@cdiscount.fr", "testpwd", $account);
+        $jwtToken = $this->getJWTToken($user, $client, "testpwd");
+        $response = $client->request('POST', '/api/customers', [
+            'headers' => [
+                'Authorization' => 'Bearer '.$jwtToken
+            ],
+            'json' => [
+              'email' =>  'beyonce.knowles@gmail.com',
+              'firstName' => 'Beyoncé',
+              'lastName' => 'Knowles',
+              'phoneNumber' => '05 62 74 84 71'
+            ]
+        ]);
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseStatusCodeSame(201);
     }
 
-    public function testUserCannotAddUsersOnOtherAccounts(): void
-    {
-    }
+//    public function testUserCannotAddUsersOnOtherAccounts(): void
+//    {
+//    }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws Exception
+     */
     public function testUserCannotCreateCustomerWithMissingData(): void
     {
+        $client = self::createClient();
+        $account = $this->createAccount("contact@cdiscount.fr");
+        $user = $this->createUser("admin@cdiscount.fr", "testpwd", $account);
+        $jwtToken = $this->getJWTToken($user, $client, "testpwd");
+        $response = $client->request('POST', '/api/customers', [
+            'headers' => [
+                'Authorization' => 'Bearer '.$jwtToken
+            ],
+            'json' => [
+                'firstName' => 'Beyoncé',
+                'lastName' => 'Knowles',
+                'phoneNumber' => '05 62 74 84 71'
+            ]
+        ]);
+        $this->assertResponseStatusCodeSame(422);
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws Exception
+     */
     public function testUserCannotCreateCustomersWithoutJWT(): void
     {
+        $client = self::createClient();
+        $account = $this->createAccount("contact@cdiscount.fr");
+        $user = $this->createUser("admin@cdiscount.fr", "testpwd", $account);
+        $response = $client->request('POST', '/api/customers', [
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+            'json' => [
+                'email' =>  'beyonce.knowles@gmail.com',
+                'firstName' => 'Beyoncé',
+                'lastName' => 'Knowles',
+                'phoneNumber' => '05 62 74 84 71'
+            ]
+        ]);
+        $this->assertResponseStatusCodeSame(401);
     }
 
     /**
