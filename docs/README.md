@@ -22,10 +22,6 @@ Products sold by BileMo (mobile phones, tablets, headphones and other accessorie
 
 Each product belongs  to a Category (e.g. phone, tablet, accessory).
 
-### Accounts
-
-An account is a BileMo customer - it is usually a company.
-
 ### Customers
 
 A customer is a physical person, someone who's purchased a product. Each Customer belongs to an Account.
@@ -33,6 +29,12 @@ A customer is a physical person, someone who's purchased a product. Each Custome
 ### Users
 
 A user is someone who has been granted access to the BileMo API. Each user belongs to an Account. A user can 
+
+### Accounts (NOT an API Resource)
+
+An account is a BileMo customer - it is usually a company, a retailer. Although each User & Customer is assigned to an Account, accounts are
+not actually API Resources. The assignation of a Customer or a User to an Account is automatically handled by BileMo code in the background.
+
 
 
 ## Downloading the project
@@ -131,13 +133,86 @@ curl --location --request GET 'https://localhost:8000/api/products' \
 
 ```
 
-| Method | URL                                  | Headers                                                                                                                                                                                                                                                                                                                                                       | Response body                                                                                                                                                                                                                                                                                                                                                                                                |
-|--------|--------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| GET    | https://localhost:8000/api/products  | 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjI2NTY0MTgsImV4cCI6MTY2MjY2MDAxOCwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiZXN0ZWxsZS5nYWl0c0BnbWFpbC5jb20ifQ.MOel3xEsnEtnKtnwEg5jcoCw3MVE3DNXt-DmFhz_CZPwouoIExc-FxXHLkJwvdlQwMl0slOYgmk95OBSqNkCb7j35qGiwgV-0k9mmKc1HfCXbHMcWqZg6kElcp9uXdsMHjYdwnJfX2ZYC37te7TxXX6fWUM22Y7A'  | ```[{"id": 377,"name": "Sed","createdAt": "2022-07-06T22:46:31+00:00","updatedAt": "2022-07-07T22:46:31+00:00","description": "Neque deleniti culpa sequi itaque eos magnam esse. Ut deserunt incidunt expedita est quia tempora veniam voluptatem. Id quia vitae nihil fuga.","category": "/api/categories/78","brand": "Masson","sku": "2120490525444","available": false,"price": 330.8}, ..... ]```      |
+| Method | URL                                  | Headers                                                                                                                                                                                                                                                                                                                                                       | Response body                                                                                                                                                                                                                                                                                                                                                                                                | Successful response status code  |
+|--------|--------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------|
+| GET    | https://localhost:8000/api/products  | 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjI2NTY0MTgsImV4cCI6MTY2MjY2MDAxOCwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiZXN0ZWxsZS5nYWl0c0BnbWFpbC5jb20ifQ.MOel3xEsnEtnKtnwEg5jcoCw3MVE3DNXt-DmFhz_CZPwouoIExc-FxXHLkJwvdlQwMl0slOYgmk95OBSqNkCb7j35qGiwgV-0k9mmKc1HfCXbHMcWqZg6kElcp9uXdsMHjYdwnJfX2ZYC37te7TxXX6fWUM22Y7A'  | ```[{"id": 377,"name": "Sed","createdAt": "2022-07-06T22:46:31+00:00","updatedAt": "2022-07-07T22:46:31+00:00","description": "Neque deleniti culpa sequi itaque eos magnam esse. Ut deserunt incidunt expedita est quia tempora veniam voluptatem. Id quia vitae nihil fuga.","category": "/api/categories/78","brand": "Masson","sku": "2120490525444","available": false,"price": 330.8}, ..... ]```      | 200                              |
 
 
 ![GET Products](images/products.png)
 
+#### Endpoints
+
+##### Logging into the API
+
+###### POST /api/login_check
+
+Allows you to get a JWT token, which you will need to provide to authenticate on other API requests.
+
+##### Products
+
+###### GET /api/products
+
+Allows you to retrieve the complete list of Products available on the BileMo catalog.
+
+###### GET /api/products/{id}
+
+Allows you to read a BileMo Product by providing its Product ID.
+
+##### Categories
+
+###### GET /api/categories
+
+Allows you to retrieve the complete list of Products available on the BileMo catalog. Categories include (non-exhaustive list) :
+
+- smartphone
+- smartwatch
+- tv
+- accessories
+- smarthome
+- refurbished
+- hifi
+
+###### GET /api/categories/{id}
+
+  Allows you to read a BileMo product Category by providing its Category ID. 
+
+##### Customers
+
+###### GET /api/customers
+
+Allows you to retrieve the list of your website's Customers (which are linked to your Account).
+
+###### GET /api/customers/{id}
+
+Allows you to read the personal details of one of your website's Customer (which is linked to your Account) by providing their Customer ID.
+
+###### POST /api/customers
+
+Allows you to create a Customer (which is linked to your Account).
+
+###### DELETE /api/customers/{id}
+
+Allows you to delete a Customer (which is linked to your Account) by providing their Customer ID.
+
+##### Users
+
+###### GET /api/users
+
+Allows you to retrieve the list of Users related to your Account.
+
+###### GET /api/users/{id}
+
+Allows you to read a User account by providing the User account ID.
+
+###### POST /api/users
+
+Allows you to create a User account.
+
+###### DELETE /api/users/{id}
+
+!> Access control: this endpoint is only accessible to Admin users and/or the actual user account which is being deleted
+
+Allows you to delete a User account.
 
 ## Credits
 
