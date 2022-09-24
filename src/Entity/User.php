@@ -19,7 +19,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
     collectionOperations: [
-        // need to find a way to only return users linked to current user's own account
         "get",
         "post"
     ],

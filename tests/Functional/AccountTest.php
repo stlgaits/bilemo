@@ -27,7 +27,7 @@ class AccountTest extends CustomApiTestCase
     public function testReadAccountsCollection(): void
     {
         $response = static::createClient()->request('GET', '/api/accounts');
-        // The list of accounts should not be available
+        // Acccount is not an API Resource
         $this->assertResponseStatusCodeSame(404);
     }
 
@@ -37,8 +37,8 @@ class AccountTest extends CustomApiTestCase
     public function testReadOneAccountWithNoJWTToken(): void
     {
         $response = static::createClient()->request('GET', '/api/accounts/1');
-        // The list of accounts should not be available
-        $this->assertResponseStatusCodeSame(401);
+        // Acccount is not an API Resource
+        $this->assertResponseStatusCodeSame(404);
     }
 
     /**
@@ -49,6 +49,8 @@ class AccountTest extends CustomApiTestCase
      * @throws Exception
      * @throws DecodingExceptionInterface
      * A user should be able to access their own Account (but no other)
+     * @TODO: this needs to be reworked entirely as we've now disabled the accounts endpoint
+     * POtentially, we could instead test that the /users/{id} account resource property does indeed contain the same info
      */
     public function testReadUsersOwnAccountWithJWTAuthToken(): void
     {
@@ -68,15 +70,19 @@ class AccountTest extends CustomApiTestCase
             ]
         ]);
 
+        // /accounts endpoint should now be disabled entirely
+        $this->assertResponseStatusCodeSame(404);
+
+
         // Only the current user's account should be readable
-        $this->assertResponseStatusCodeSame(200);
-        $this->assertJsonContains(['primaryEmail' => 'contact@orange.com']);
-        $data = $client->getResponse()->toArray();
-        $this->assertArrayHasKey("industry", $data);
-        $this->assertArrayHasKey("description", $data);
-        $this->assertArrayHasKey("name", $data);
-        $this->assertArrayHasKey("users", $data);
-        $this->assertArrayHasKey("createdAt", $data);
+//        $this->assertResponseStatusCodeSame(200);
+//        $this->assertJsonContains(['primaryEmail' => 'contact@orange.com']);
+//        $data = $client->getResponse()->toArray();
+//        $this->assertArrayHasKey("industry", $data);
+//        $this->assertArrayHasKey("description", $data);
+//        $this->assertArrayHasKey("name", $data);
+//        $this->assertArrayHasKey("users", $data);
+//        $this->assertArrayHasKey("createdAt", $data);
     }
 
     /**
@@ -106,7 +112,7 @@ class AccountTest extends CustomApiTestCase
             ]
         ]);
 
-        // Only the current user's account should be readable
-        $this->assertResponseStatusCodeSame(403);
+        // Not account endpoint should be available
+        $this->assertResponseStatusCodeSame(404);
     }
 }
