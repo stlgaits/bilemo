@@ -237,6 +237,211 @@ Allows you to retrieve the complete list of Products available on the BileMo cat
 |--------|-----------------------------------------|-------------------------------------------|-----------------------------------|
 | GET    | https://localhost:8000/api/categories   | 'Authorization: Bearer <your JWT token>'  | 200                               |
 
+Example response
+
+````json
+[
+  {
+    "id": 78,
+    "name": "Smartphone",
+    "description": null,
+    "products": [
+      "/api/products/377",
+      "/api/products/384",
+      "/api/products/391",
+      "/api/products/398",
+      "/api/products/405",
+      "/api/products/412",
+      "/api/products/419",
+      "/api/products/426",
+      "/api/products/433",
+      "/api/products/440",
+      "/api/products/447"
+    ],
+    "createdAt": "2012-12-27T09:53:39+00:00",
+    "updatedAt": "2013-01-01T09:53:39+00:00"
+  },
+  {
+    "id": 79,
+    "name": "Smartwatch",
+    "description": null,
+    "products": [
+      "/api/products/378",
+      "/api/products/385",
+      "/api/products/392",
+      "/api/products/399",
+      "/api/products/406",
+      "/api/products/413",
+      "/api/products/420",
+      "/api/products/427",
+      "/api/products/434",
+      "/api/products/441",
+      "/api/products/448"
+    ],
+    "createdAt": "2012-12-27T09:53:39+00:00",
+    "updatedAt": "2013-01-01T09:53:39+00:00"
+  },
+  {
+    "id": 80,
+    "name": "Tv",
+    "description": null,
+    "products": [
+      "/api/products/379",
+      "/api/products/386",
+      "/api/products/393",
+      "/api/products/400",
+      "/api/products/407",
+      "/api/products/414",
+      "/api/products/421",
+      "/api/products/428",
+      "/api/products/435",
+      "/api/products/442",
+      "/api/products/449"
+    ],
+    "createdAt": "2012-12-27T09:53:39+00:00",
+    "updatedAt": "2013-01-01T09:53:39+00:00"
+  },
+  {
+    "id": 81,
+    "name": "Accessories",
+    "description": null,
+    "products": [
+      "/api/products/380",
+      "/api/products/387",
+      "/api/products/394",
+      "/api/products/401",
+      "/api/products/408",
+      "/api/products/415",
+      "/api/products/422",
+      "/api/products/429",
+      "/api/products/436",
+      "/api/products/443",
+      "/api/products/450"
+    ],
+    "createdAt": "2012-12-27T09:53:39+00:00",
+    "updatedAt": "2013-01-01T09:53:39+00:00"
+  },
+  {
+    "id": 82,
+    "name": "Smarthome",
+    "description": null,
+    "products": [
+      "/api/products/381",
+      "/api/products/388",
+      "/api/products/395",
+      "/api/products/402",
+      "/api/products/409",
+      "/api/products/416",
+      "/api/products/423",
+      "/api/products/430",
+      "/api/products/437",
+      "/api/products/444",
+      "/api/products/451"
+    ],
+    "createdAt": "2012-12-27T09:53:39+00:00",
+    "updatedAt": "2013-01-01T09:53:39+00:00"
+  },
+  {
+    "id": 83,
+    "name": "Refurbished",
+    "description": null,
+    "products": [
+      "/api/products/382",
+      "/api/products/389",
+      "/api/products/396",
+      "/api/products/403",
+      "/api/products/410",
+      "/api/products/417",
+      "/api/products/424",
+      "/api/products/431",
+      "/api/products/438",
+      "/api/products/445"
+    ],
+    "createdAt": "2012-12-27T09:53:39+00:00",
+    "updatedAt": "2013-01-01T09:53:39+00:00"
+  },
+  {
+    "id": 84,
+    "name": "Hifi",
+    "description": null,
+    "products": [
+      "/api/products/383",
+      "/api/products/390",
+      "/api/products/397",
+      "/api/products/404",
+      "/api/products/411",
+      "/api/products/418",
+      "/api/products/425",
+      "/api/products/432",
+      "/api/products/439",
+      "/api/products/446"
+    ],
+    "createdAt": "2012-12-27T09:53:39+00:00",
+    "updatedAt": "2013-01-01T09:53:39+00:00"
+  },
+  {
+    "id": 92,
+    "name": "Smartphone",
+    "description": null,
+    "products": [
+      "/api/products/527",
+      "/api/products/534",
+      "/api/products/541",
+      "/api/products/548",
+      "/api/products/555",
+      "/api/products/562",
+      "/api/products/569",
+      "/api/products/576",
+      "/api/products/583",
+      "/api/products/590",
+      "/api/products/597"
+    ],
+    "createdAt": "2018-11-10T06:45:47+00:00",
+    "updatedAt": "2018-11-15T06:45:47+00:00"
+  },
+  {
+    "id": 93,
+    "name": "Smartwatch",
+    "description": null,
+    "products": [
+      "/api/products/528",
+      "/api/products/535",
+      "/api/products/542",
+      "/api/products/549",
+      "/api/products/556",
+      "/api/products/563",
+      "/api/products/570",
+      "/api/products/577",
+      "/api/products/584",
+      "/api/products/591",
+      "/api/products/598"
+    ],
+    "createdAt": "2018-11-10T06:45:47+00:00",
+    "updatedAt": "2018-11-15T06:45:47+00:00"
+  },
+  {
+    "id": 94,
+    "name": "Tv",
+    "description": null,
+    "products": [
+      "/api/products/529",
+      "/api/products/536",
+      "/api/products/543",
+      "/api/products/550",
+      "/api/products/557",
+      "/api/products/564",
+      "/api/products/571",
+      "/api/products/578",
+      "/api/products/585",
+      "/api/products/592",
+      "/api/products/599"
+    ],
+    "createdAt": "2018-11-10T06:45:47+00:00",
+    "updatedAt": "2018-11-15T06:45:47+00:00"
+  }
+]
+````
+
 
 ###### GET /api/categories/{id}
 
@@ -246,6 +451,29 @@ Allows you to retrieve the complete list of Products available on the BileMo cat
 | Method | example URL                              | Headers                                    | Successful response status code  | Error status codes     |
 |--------|------------------------------------------|--------------------------------------------|----------------------------------|------------------------|
 | GET    | https://localhost:8000/api/categories/44 | 'Authorization: Bearer <your JWT token>'   | 200                              | 404 Resource not found |
+
+````json
+{
+  "id": 78,
+  "name": "Smartphone",
+  "description": null,
+  "products": [
+    "/api/products/377",
+    "/api/products/384",
+    "/api/products/391",
+    "/api/products/398",
+    "/api/products/405",
+    "/api/products/412",
+    "/api/products/419",
+    "/api/products/426",
+    "/api/products/433",
+    "/api/products/440",
+    "/api/products/447"
+  ],
+  "createdAt": "2012-12-27T09:53:39+00:00",
+  "updatedAt": "2013-01-01T09:53:39+00:00"
+}
+````
 
 ##### Customers
 
@@ -298,6 +526,143 @@ Allows you to retrieve the list of Users related to your Account.
 |--------|-----------------------------------|--------------------------------------------|----------------------------------|
 | GET    | https://localhost:8000/api/users  | 'Authorization: Bearer <your JWT token>'   | 200                              |
 
+Example response :
+
+````json
+[
+  {
+    "email": "estelle.gaits@gmail.com",
+    "account": {
+      "name": "Fnac",
+      "description": "Fnac is a large French retail chain selling cultural and electronic products, founded by André Essel and Max Théret in 1954. Its head office is in Le Flavia in Ivry-sur-Seine near Paris. Fnac is an abbreviation of Fédération Nationale d'Achats des Cadres",
+      "industry": "Retail",
+      "primaryEmail": "contact@fnac.com"
+    },
+    "firstName": "Estelle",
+    "lastName": "Gaits",
+    "createdAt": "2022-06-30T18:36:49+00:00",
+    "updatedAt": "2022-06-30T18:36:49+00:00"
+  },
+  {
+    "email": "philippine32@laposte.net",
+    "account": {
+      "name": "Fnac",
+      "description": "Fnac is a large French retail chain selling cultural and electronic products, founded by André Essel and Max Théret in 1954. Its head office is in Le Flavia in Ivry-sur-Seine near Paris. Fnac is an abbreviation of Fédération Nationale d'Achats des Cadres",
+      "industry": "Retail",
+      "primaryEmail": "contact@fnac.com"
+    },
+    "firstName": "Julien",
+    "lastName": "Rousseau",
+    "createdAt": "2016-09-15T20:34:38+00:00",
+    "updatedAt": "2016-09-16T20:34:38+00:00"
+  },
+  {
+    "email": "anouk.marin@marques.net",
+    "account": {
+      "name": "Fnac",
+      "description": "Fnac is a large French retail chain selling cultural and electronic products, founded by André Essel and Max Théret in 1954. Its head office is in Le Flavia in Ivry-sur-Seine near Paris. Fnac is an abbreviation of Fédération Nationale d'Achats des Cadres",
+      "industry": "Retail",
+      "primaryEmail": "contact@fnac.com"
+    },
+    "firstName": "Odette",
+    "lastName": "Leclercq",
+    "createdAt": "2016-09-15T20:34:38+00:00",
+    "updatedAt": "2016-09-16T20:34:38+00:00"
+  },
+  {
+    "email": "millet.adrien@chauvin.fr",
+    "account": {
+      "name": "Fnac",
+      "description": "Fnac is a large French retail chain selling cultural and electronic products, founded by André Essel and Max Théret in 1954. Its head office is in Le Flavia in Ivry-sur-Seine near Paris. Fnac is an abbreviation of Fédération Nationale d'Achats des Cadres",
+      "industry": "Retail",
+      "primaryEmail": "contact@fnac.com"
+    },
+    "firstName": "Jules",
+    "lastName": "Leconte",
+    "createdAt": "2016-09-15T20:34:38+00:00",
+    "updatedAt": "2016-09-16T20:34:38+00:00"
+  },
+  {
+    "email": "hernandez.jeanne@sfr.fr",
+    "account": {
+      "name": "Fnac",
+      "description": "Fnac is a large French retail chain selling cultural and electronic products, founded by André Essel and Max Théret in 1954. Its head office is in Le Flavia in Ivry-sur-Seine near Paris. Fnac is an abbreviation of Fédération Nationale d'Achats des Cadres",
+      "industry": "Retail",
+      "primaryEmail": "contact@fnac.com"
+    },
+    "firstName": "Étienne",
+    "lastName": "Paris",
+    "createdAt": "2016-09-15T20:34:38+00:00",
+    "updatedAt": "2016-09-16T20:34:38+00:00"
+  },
+  {
+    "email": "marie16@tele2.fr",
+    "account": {
+      "name": "Fnac",
+      "description": "Fnac is a large French retail chain selling cultural and electronic products, founded by André Essel and Max Théret in 1954. Its head office is in Le Flavia in Ivry-sur-Seine near Paris. Fnac is an abbreviation of Fédération Nationale d'Achats des Cadres",
+      "industry": "Retail",
+      "primaryEmail": "contact@fnac.com"
+    },
+    "firstName": "Céline",
+    "lastName": "Dufour",
+    "createdAt": "2016-09-15T20:34:38+00:00",
+    "updatedAt": "2016-09-16T20:34:38+00:00"
+  },
+  {
+    "email": "ifleury@bodin.fr",
+    "account": {
+      "name": "Fnac",
+      "description": "Fnac is a large French retail chain selling cultural and electronic products, founded by André Essel and Max Théret in 1954. Its head office is in Le Flavia in Ivry-sur-Seine near Paris. Fnac is an abbreviation of Fédération Nationale d'Achats des Cadres",
+      "industry": "Retail",
+      "primaryEmail": "contact@fnac.com"
+    },
+    "firstName": "Élisabeth",
+    "lastName": "Raymond",
+    "createdAt": "2016-09-15T20:34:38+00:00",
+    "updatedAt": "2016-09-16T20:34:38+00:00"
+  },
+  {
+    "email": "caroline91@dossantos.fr",
+    "account": {
+      "name": "Fnac",
+      "description": "Fnac is a large French retail chain selling cultural and electronic products, founded by André Essel and Max Théret in 1954. Its head office is in Le Flavia in Ivry-sur-Seine near Paris. Fnac is an abbreviation of Fédération Nationale d'Achats des Cadres",
+      "industry": "Retail",
+      "primaryEmail": "contact@fnac.com"
+    },
+    "firstName": "Martin",
+    "lastName": "Charrier",
+    "createdAt": "2016-09-15T20:34:38+00:00",
+    "updatedAt": "2016-09-16T20:34:38+00:00"
+  },
+  {
+    "email": "zacharie59@clerc.com",
+    "account": {
+      "name": "Fnac",
+      "description": "Fnac is a large French retail chain selling cultural and electronic products, founded by André Essel and Max Théret in 1954. Its head office is in Le Flavia in Ivry-sur-Seine near Paris. Fnac is an abbreviation of Fédération Nationale d'Achats des Cadres",
+      "industry": "Retail",
+      "primaryEmail": "contact@fnac.com"
+    },
+    "firstName": "Martin",
+    "lastName": "Blondel",
+    "createdAt": "2016-09-15T20:34:38+00:00",
+    "updatedAt": "2016-09-16T20:34:38+00:00"
+  },
+  {
+    "email": "qmarie@gregoire.net",
+    "account": {
+      "name": "Fnac",
+      "description": "Fnac is a large French retail chain selling cultural and electronic products, founded by André Essel and Max Théret in 1954. Its head office is in Le Flavia in Ivry-sur-Seine near Paris. Fnac is an abbreviation of Fédération Nationale d'Achats des Cadres",
+      "industry": "Retail",
+      "primaryEmail": "contact@fnac.com"
+    },
+    "firstName": "Marie",
+    "lastName": "Bouvier",
+    "createdAt": "2016-09-15T20:34:38+00:00",
+    "updatedAt": "2016-09-16T20:34:38+00:00"
+  }
+]
+````
+
 
 ###### GET /api/users/{id}
 
@@ -307,6 +672,22 @@ Allows you to read a User account by providing the User account ID.
 | Method | example URL                          | Headers                                    | Successful response status code  | Error status codes     |
 |--------|--------------------------------------|--------------------------------------------|----------------------------------|------------------------|
 | GET    | https://localhost:8000/api/users/44  | 'Authorization: Bearer <your JWT token>'   | 200                              | 404 Resource not found |
+
+````json
+{
+  "email": "lorie.lafont@gmail.com",
+  "account": {
+    "name": "Fnac",
+    "description": "Fnac is a large French retail chain selling cultural and electronic products, founded by André Essel and Max Théret in 1954. Its head office is in Le Flavia in Ivry-sur-Seine near Paris. Fnac is an abbreviation of Fédération Nationale d'Achats des Cadres",
+    "industry": "Retail",
+    "primaryEmail": "contact@fnac.com"
+  },
+  "firstName": "Lorie",
+  "lastName": "Lafont",
+  "createdAt": "2022-06-30T18:36:49+00:00",
+  "updatedAt": "2022-06-30T18:36:49+00:00"
+}
+````
 
 
 ###### POST /api/users
