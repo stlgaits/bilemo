@@ -107,7 +107,7 @@ You can now go to your localhost URL : <http://127.0.0.1:8000> where the blog sh
 This documentation provides you with examples & the list of available endpoints. You can try out these requests on any API platform such as [Postman](https://www.postman.com/), [HoppScotch](https://hoppscotch.io/fr/) or other online clients. However, you can test out the BileMo API directly from within the included SwaggerUI interface available at /docs endpoint.
 Example : https://localhost:8000/docs
 
-![SwaggerUI list of endpoints](swagger_ui1.png)
+![SwaggerUI list of endpoints](images/swagger_ui1.png)
 
 ### Authenticate
 
