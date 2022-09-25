@@ -104,6 +104,11 @@ You can now go to your localhost URL : <http://127.0.0.1:8000> where the blog sh
 
 ## Start using the API
 
+This documentation provides you with examples & the list of available endpoints. You can try out these requests on any API platform such as [Postman](https://www.postman.com/), [HoppScotch](https://hoppscotch.io/fr/) or other online clients. However, you can test out the BileMo API directly from within the included SwaggerUI interface available at /docs endpoint.
+Example : https://localhost:8000/docs
+
+![SwaggerUI list of endpoints](swagger_ui1.png)
+
 ### Authenticate
 
 #### Get your JWT token
@@ -154,9 +159,65 @@ Allows you to get a JWT token, which you will need to provide to authenticate on
 
 Allows you to retrieve the complete list of Products available on the BileMo catalog.
 
+
+| Method | example URL                          | Headers                                | Successful response status code |
+|--------|--------------------------------------|----------------------------------------|---------------------------------|
+| GET    | https://localhost:8000/api/products  | 'Authorization: Bearer <yourJWTtoken>' | 200                             |
+
+````json
+[
+  {
+    "id": 24,
+    "name": "Iphone 14",
+    "createdAt": "2022-09-24T17:40:28.854Z",
+    "updatedAt": "2022-09-24T17:40:28.854Z",
+    "description": "Yet another Iphone, but more expensive!",
+    "category": "smartphone",
+    "brand": "Apple",
+    "sku": "123456789",
+    "available": true,
+    "price": 1429
+},
+{
+    "id": 25,
+    "name": "Galaxy S22 Ultra",
+    "createdAt": "2022-09-24T17:40:28.854Z",
+    "updatedAt": "2022-09-24T17:40:28.854Z",
+    "description": "A galaxy yet unmapped by Webb telescope",
+    "category": "smartphone",
+    "brand": "Samsung",
+    "sku": "013652749",
+    "available": true,
+    "price": 699
+  }
+]
+````
+
+
 ###### GET /api/products/{id}
 
 Allows you to read a BileMo Product by providing its Product ID.
+
+| Method | example URL                             | Headers                                   | Successful response status code  |
+|--------|-----------------------------------------|-------------------------------------------|----------------------------------|
+| GET    | https://localhost:8000/api/products/32  | 'Authorization: Bearer <your JWT token>'  | 200                              |
+
+Example response: 
+
+````json
+{
+"id": 24,
+"name": "Iphone 14",
+"createdAt": "2022-09-24T17:40:28.854Z",
+"updatedAt": "2022-09-24T17:40:28.854Z",
+"description": "Yet another Iphone, but more expensive!",
+"category": "smartphone",
+"brand": "Apple",
+"sku": "123456789",
+"available": true,
+"price": 1429
+}
+````
 
 ##### Categories
 
@@ -172,9 +233,19 @@ Allows you to retrieve the complete list of Products available on the BileMo cat
 - refurbished
 - hifi
 
+| Method | example URL                             | Headers                                   | Successful response status code   |
+|--------|-----------------------------------------|-------------------------------------------|-----------------------------------|
+| GET    | https://localhost:8000/api/categories   | 'Authorization: Bearer <your JWT token>'  | 200                               |
+
+
 ###### GET /api/categories/{id}
 
   Allows you to read a BileMo product Category by providing its Category ID. 
+
+
+| Method | example URL                              | Headers                                    | Successful response status code  | Error status codes     |
+|--------|------------------------------------------|--------------------------------------------|----------------------------------|------------------------|
+| GET    | https://localhost:8000/api/categories/44 | 'Authorization: Bearer <your JWT token>'   | 200                              | 404 Resource not found |
 
 ##### Customers
 
@@ -182,17 +253,39 @@ Allows you to retrieve the complete list of Products available on the BileMo cat
 
 Allows you to retrieve the list of your website's Customers (which are linked to your Account).
 
+
+| Method | example URL                          | Headers                                    | Successful response status code  | 
+|--------|--------------------------------------|--------------------------------------------|----------------------------------|
+| GET    | https://localhost:8000/api/customers | 'Authorization: Bearer <your JWT token>'   | 200                              |
+
 ###### GET /api/customers/{id}
 
 Allows you to read the personal details of one of your website's Customer (which is linked to your Account) by providing their Customer ID.
+
+
+| Method | example URL                             | Headers                                    | Successful response status code  | Error status codes     |
+|--------|-----------------------------------------|--------------------------------------------|----------------------------------|------------------------|
+| GET    | https://localhost:8000/api/customers/44 | 'Authorization: Bearer <your JWT token>'   | 200                              | 404 Resource not found |
 
 ###### POST /api/customers
 
 Allows you to create a Customer (which is linked to your Account).
 
+
+| Method | example URL                          | Headers                                   | Successful response status code | Error status codes                              |
+|--------|--------------------------------------|-------------------------------------------|---------------------------------|-------------------------------------------------|
+| POST   | https://localhost:8000/api/customers | 'Authorization: Bearer <your JWT token>'  | 201   Customer resource created | 400 Invalid input<br/> 422 Unprocessable entity |
+
+
+
 ###### DELETE /api/customers/{id}
 
 Allows you to delete a Customer (which is linked to your Account) by providing their Customer ID.
+
+
+| Method | example URL                            | Headers                                   | Successful response status code | Error status code       |
+|--------|----------------------------------------|-------------------------------------------|---------------------------------|-------------------------|
+| DELETE | https://localhost:8000/api/customers/3 | 'Authorization: Bearer <your JWT token>'  | 204 Customer resource deleted   | 404 Resource not found  |
 
 ##### Users
 
@@ -200,19 +293,52 @@ Allows you to delete a Customer (which is linked to your Account) by providing t
 
 Allows you to retrieve the list of Users related to your Account.
 
+
+| Method | example URL                       | Headers                                    | Successful response status code  | 
+|--------|-----------------------------------|--------------------------------------------|----------------------------------|
+| GET    | https://localhost:8000/api/users  | 'Authorization: Bearer <your JWT token>'   | 200                              |
+
+
 ###### GET /api/users/{id}
 
 Allows you to read a User account by providing the User account ID.
 
+
+| Method | example URL                          | Headers                                    | Successful response status code  | Error status codes     |
+|--------|--------------------------------------|--------------------------------------------|----------------------------------|------------------------|
+| GET    | https://localhost:8000/api/users/44  | 'Authorization: Bearer <your JWT token>'   | 200                              | 404 Resource not found |
+
+
 ###### POST /api/users
 
 Allows you to create a User account.
+
+
+| Method | example URL                      | Headers                                   | Successful response status code | Error status codes                              |
+|--------|----------------------------------|-------------------------------------------|---------------------------------|-------------------------------------------------|
+| POST   | https://localhost:8000/api/users | 'Authorization: Bearer <your JWT token>'  | 201   User resource created     | 400 Invalid input<br/> 422 Unprocessable entity |
+
+
 
 ###### DELETE /api/users/{id}
 
 !> Access control: this endpoint is only accessible to Admin users and/or the actual user account which is being deleted
 
 Allows you to delete a User account.
+
+
+| Method | example URL                        | Headers                                   | Successful response status code | Error status code       |
+|--------|------------------------------------|-------------------------------------------|---------------------------------|-------------------------|
+| DELETE | https://localhost:8000/api/users/3 | 'Authorization: Bearer <your JWT token>'  | 204   User resource deleted     | 404 Resource not found  |
+
+
+### Pagination
+
+For all available resources, you can paginate your requests, simply by adding a page query parameter in the URL.
+
+| Method | example URL                                | Headers                                   | Successful response status code   |
+|--------|--------------------------------------------|-------------------------------------------|-----------------------------------|
+| GET    | https://localhost:8000/api/products?page=3 | 'Authorization: Bearer <your JWT token>'  | 200                               |
 
 ## Credits
 
