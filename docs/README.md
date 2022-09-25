@@ -486,6 +486,43 @@ Allows you to retrieve the list of your website's Customers (which are linked to
 |--------|--------------------------------------|--------------------------------------------|----------------------------------|
 | GET    | https://localhost:8000/api/customers | 'Authorization: Bearer <your JWT token>'   | 200                              |
 
+Example response : 
+
+````json
+[
+  {
+    "id": 52,
+    "email": "marc.dufour@example.com",
+    "firstName": "Marc",
+    "lastName": "Dufour",
+    "phoneNumber": "07 84 85 89 87",
+    "account": {
+      "name": "Fnac",
+      "description": "Fnac is a large French retail chain selling cultural and electronic products, founded by André Essel and Max Théret in 1954. Its head office is in Le Flavia in Ivry-sur-Seine near Paris. Fnac is an abbreviation of Fédération Nationale d'Achats des Cadres",
+      "industry": "Retail",
+      "primaryEmail": "contact@fnac.com"
+    },
+    "createdAt": "2022-09-18T18:47:11+00:00",
+    "updatedAt": "2022-09-18T18:47:11+00:00"
+  },
+  {
+    "id": 53,
+    "email": "kevin.lamotte@example.com",
+    "firstName": "Kevin",
+    "lastName": "kevin.lamotte@example.com",
+    "phoneNumber": "07 84 85 89 87",
+    "account": {
+      "name": "Fnac",
+      "description": "Fnac is a large French retail chain selling cultural and electronic products, founded by André Essel and Max Théret in 1954. Its head office is in Le Flavia in Ivry-sur-Seine near Paris. Fnac is an abbreviation of Fédération Nationale d'Achats des Cadres",
+      "industry": "Retail",
+      "primaryEmail": "contact@fnac.com"
+    },
+    "createdAt": "2022-09-18T18:53:38+00:00",
+    "updatedAt": "2022-09-18T18:53:38+00:00"
+  }
+]
+````
+
 ###### GET /api/customers/{id}
 
 Allows you to read the personal details of one of your website's Customer (which is linked to your Account) by providing their Customer ID.
@@ -493,7 +530,25 @@ Allows you to read the personal details of one of your website's Customer (which
 
 | Method | example URL                             | Headers                                    | Successful response status code  | Error status codes     |
 |--------|-----------------------------------------|--------------------------------------------|----------------------------------|------------------------|
-| GET    | https://localhost:8000/api/customers/44 | 'Authorization: Bearer <your JWT token>'   | 200                              | 404 Resource not found |
+| GET    | https://localhost:8000/api/customers/52 | 'Authorization: Bearer <your JWT token>'   | 200                              | 404 Resource not found |
+
+````json
+{
+  "id": 52,
+  "email": "marc.dufour@example.com",
+  "firstName": "Marc",
+  "lastName": "Dufour",
+  "phoneNumber": "07 84 85 89 87",
+  "account": {
+    "name": "Fnac",
+    "description": "Fnac is a large French retail chain selling cultural and electronic products, founded by André Essel and Max Théret in 1954. Its head office is in Le Flavia in Ivry-sur-Seine near Paris. Fnac is an abbreviation of Fédération Nationale d'Achats des Cadres",
+    "industry": "Retail",
+    "primaryEmail": "contact@fnac.com"
+  },
+  "createdAt": "2022-09-18T18:47:11+00:00",
+  "updatedAt": "2022-09-18T18:47:11+00:00"
+}
+````
 
 ###### POST /api/customers
 
@@ -504,7 +559,36 @@ Allows you to create a Customer (which is linked to your Account).
 |--------|--------------------------------------|-------------------------------------------|---------------------------------|-------------------------------------------------|
 | POST   | https://localhost:8000/api/customers | 'Authorization: Bearer <your JWT token>'  | 201   Customer resource created | 400 Invalid input<br/> 422 Unprocessable entity |
 
+Example body :
 
+````json
+{
+  "email": "karim.benzema@darty.com",
+  "firstName": "Karim",
+  "lastName": "Benzema",
+  "phoneNumber": "0131321457"
+}
+````
+
+Example response :
+
+````json
+{
+  "id": 54,
+  "email": "karim.benzema@darty.com",
+  "firstName": "Karim",
+  "lastName": "Benzema",
+  "phoneNumber": "0131321457",
+  "account": {
+    "name": "Fnac",
+    "description": "Fnac is a large French retail chain selling cultural and electronic products, founded by André Essel and Max Théret in 1954. Its head office is in Le Flavia in Ivry-sur-Seine near Paris. Fnac is an abbreviation of Fédération Nationale d'Achats des Cadres",
+    "industry": "Retail",
+    "primaryEmail": "contact@fnac.com"
+  },
+  "createdAt": "2022-09-25T22:52:44+00:00",
+  "updatedAt": "2022-09-25T22:52:44+00:00"
+}
+````
 
 ###### DELETE /api/customers/{id}
 
@@ -699,11 +783,37 @@ Allows you to create a User account.
 |--------|----------------------------------|-------------------------------------------|---------------------------------|-------------------------------------------------|
 | POST   | https://localhost:8000/api/users | 'Authorization: Bearer <your JWT token>'  | 201   User resource created     | 400 Invalid input<br/> 422 Unprocessable entity |
 
+Example body :
+````json
+{
+  "email": "waheeda.beshir@gmail.com",
+  "password": "platform",
+  "firstName": "Waheeda",
+  "lastName": "Bechir"
+}
+````
 
+Example response : 
+
+````json
+{
+  "email": "waheeda.beshir@gmail.com",
+  "account": {
+    "name": "Fnac",
+    "description": "Fnac is a large French retail chain selling cultural and electronic products, founded by André Essel and Max Théret in 1954. Its head office is in Le Flavia in Ivry-sur-Seine near Paris. Fnac is an abbreviation of Fédération Nationale d'Achats des Cadres",
+    "industry": "Retail",
+    "primaryEmail": "contact@fnac.com"
+  },
+  "firstName": "Waheeda",
+  "lastName": "Bechir",
+  "createdAt": "2022-09-25T22:50:54+00:00",
+  "updatedAt": "2022-09-25T22:50:54+00:00"
+}
+````
 
 ###### DELETE /api/users/{id}
 
-!> Access control: this endpoint is only accessible to Admin users and/or the actual user account which is being deleted
+!> Access control: this endpoint is only accessible to Super Admin users and/or the actual user account which is being deleted
 
 Allows you to delete a User account.
 
