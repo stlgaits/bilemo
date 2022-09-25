@@ -1,6 +1,6 @@
 [//]: # (![logo]&#40;_media/icon.svg&#41;)
 
-# BileMo API <small>1.0</small>
+# BileMo API <small>1.6</small>
 
 > A simple REST API to keep track of your BileMo sales
 
