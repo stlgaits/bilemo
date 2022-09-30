@@ -1,0 +1,64 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+package BileMo {
+    entity User {
+        - id: int
+        - email: string
+        - firstName: string
+        - lastName: string
+        - password: string
+        - plainPassword: string
+        - roles: json
+        - createdAt: datetime
+        - updatedAt: datetime
+        + getUserIdentifier()
+        + eraseCredentials()
+    }
+
+    entity Customer {
+        - id: int
+        - email: string
+        - firstName: string
+        - lastName: string
+        - phoneNumber: string
+        - createdAt: datetime
+        - updatedAt: datetime
+    }
+
+    entity Product {
+        - id: int
+        - name: string
+        - price: float
+        - description: string
+        - brand: string
+        - sku: string
+        - available: boolean
+        - createdAt: datetime
+        - updatedAt: datetime
+    }
+
+    entity Category {
+        - id: int
+        - name: string
+        - description: string
+        - createdAt: datetime
+        - updatedAt: datetime
+    }
+    entity Account {
+        - id: int
+        - primaryEmail: string
+        - name: string
+        - industry: string
+        - description: string
+        - createdAt: datetime
+        - updatedAt: datetime
+    }
+
+    User "1" -- "0..*" Account : > belongs to
+    Customer "1" -- "0..*" Account : > belongs to
+    Product "1" -- "0..*" Category : > belongs to
+
+}
+
+@enduml
