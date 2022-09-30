@@ -1,0 +1,11 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+User -> BileMo: Authentication Request
+BileMo --> User: Authentication Response
+
+User -> BileMo: Another authentication Request
+User <-- BileMo: another authentication Response
+@enduml
