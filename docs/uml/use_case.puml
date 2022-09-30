@@ -1,0 +1,40 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+left to right direction
+package Account {
+    :Account Admin: as Admin
+    :User: as User
+    note left of Admin : Each Account must have at least 1 admin User.
+    User <|- Admin
+}
+package Authentication {
+    (Authenticate) as (Auth)
+    note right of (Auth)
+    JWT authentication is
+    required to use all parts of the API
+    end note
+}
+rectangle BileMo {
+    BileMo .> Authentication : include
+    (List Products) as (GET Products)
+    (View Product details) as (GET Product)
+    (List Categories) as (GET Categories)
+    (List Customers) as (GET Customers)
+    (View Customer details) as (GET Customer)
+    (Delete a Customer) as (DELETE Customer)
+    (Add a Customer) as (CREATE Customer)
+    (List Users) as (GET Users)
+    (Add a User) as (CREATE User)
+    (Delete a User) as (DELETE User)
+    Admin --> (DELETE User)
+    Admin --> (CREATE User)
+    User -->  (GET Products)
+    User -->  (GET Product)
+    User -->  (GET Categories)
+    User -->  (GET Customers)
+    User -->  (GET Customer)
+    User -->  (CREATE Customer)
+    User -->  (DELETE Customer)
+    User -->  (GET Users)
+}
+@enduml
