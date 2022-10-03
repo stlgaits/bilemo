@@ -193,6 +193,11 @@ Allows you to retrieve the complete list of Products available on the BileMo cat
 ]
 ````
 
+###### Filters
+
+You can use search query filter on Products fot the following properties: ````available```` & ```category```
+
+![SwaggerUI Products query filters](images/swagger_ui2_products_query_filters.png)
 
 ###### GET /api/products/{id}
 
