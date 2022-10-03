@@ -1,0 +1,34 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor User
+participant BileMo as "BileMo API"
+database Database as "BileMo Database"
+User -> BileMo: Authentication Request (email, plain password)
+BileMo -> Database: Find user with matching email & password combination
+alt invalid credentials
+    Database --> BileMo: null
+    BileMo --> User: JSON Authentication response: 401 Invalid credentials
+else valid credentials
+    Database --> BileMo: User object
+    BileMo --> User: JSON Authentication Response: 200 JWT token
+    User -> BileMo:Show products list (JWT token)
+    BileMo ->BileMo: Check route & query parameters are valid
+    alt Route does not exist
+        BileMo --> User: 404 Route not found
+    else Route found
+        BileMo ->BileMo: Security firewall: check token is valid & user permissions
+        alt Access denied
+            BileMo -> User: 403 Forbidden
+        else Token expired
+            BileMo -> User: 401 Unauthorized
+        else Token valid & permission granted
+            BileMo -> Database: Get products results
+            Database --> BileMo: Results query response (Products object)
+            BileMo -> BileMo: Serialize(normalize+encode) results object to JSON
+            BileMo --> User: Response 200 Serialized JSON results
+        end
+    end
+end
+@enduml
