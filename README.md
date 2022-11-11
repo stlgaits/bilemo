@@ -8,7 +8,7 @@
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/stlgaits/bilemo)](https://github.com/stlgaits/bilemo)
 [![Estelle's GitHub stats](https://github-readme-stats.vercel.app/api?username=stlgaits)](https://github.com/stlgaits/github-readme-stats)
 
-API for B2B mobile phones catalog. Full documentation for the API is available [here](https://estellemyddleware.github.io/bilemo/)
+API for B2B mobile phones catalog. Full documentation for the API is available [here](https://stlgaits.github.io/bilemo/)
 
 ## API Resources definition
 
