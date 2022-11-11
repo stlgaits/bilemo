@@ -1,12 +1,12 @@
 # BileMo
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/7085e4ffbf864523b6fd8227845a9531)](https://www.codacy.com/gh/EstelleMyddleware/bilemo/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=EstelleMyddleware/bilemo&amp;utm_campaign=Badge_Grade)
-![GitHub last commit](https://img.shields.io/github/last-commit/EstelleMyddleware/bilemo)
-[![GitHub issues](https://img.shields.io/github/issues/EstelleMyddleware/bilemo)](https://github.com/EstelleMyddleware/bilemo/issues)
-[![GitHub closed issues](https://img.shields.io/github/issues-closed/EstelleMyddleware/bilemo)](https://github.com/EstelleMyddleware/bilemo/issues?q=is%3Aissue+is%3Aclosed)
-![GitHub repo size](https://img.shields.io/github/repo-size/EstelleMyddleware/bilemo)
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/EstelleMyddleware/bilemo)](https://github.com/EstelleMyddleware/bilemo)
-[![Estelle's GitHub stats](https://github-readme-stats.vercel.app/api?username=EstelleMyddleware)](https://github.com/EstelleMyddleware/github-readme-stats)
+![GitHub last commit](https://img.shields.io/github/last-commit/stlgaits/bilemo)
+[![GitHub issues](https://img.shields.io/github/issues/stlgaits/bilemo)](https://github.com/stlgaits/bilemo/issues)
+[![GitHub closed issues](https://img.shields.io/github/issues-closed/stlgaits/bilemo)](https://github.com/stlgaits/bilemo/issues?q=is%3Aissue+is%3Aclosed)
+![GitHub repo size](https://img.shields.io/github/repo-size/stlgaits/bilemo)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/stlgaits/bilemo)](https://github.com/stlgaits/bilemo)
+[![Estelle's GitHub stats](https://github-readme-stats.vercel.app/api?username=stlgaits)](https://github.com/stlgaits/github-readme-stats)
 
 API for B2B mobile phones catalog. Full documentation for the API is available [here](https://estellemyddleware.github.io/bilemo/)
 
